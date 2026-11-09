@@ -1,0 +1,1 @@
+{% load i18n %}<form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button class="ghost logout" type="submit" aria-label="{% translate "Se déconnecter" %}">{% include 'ui/icon.html' with name='logout' %}<span>{% translate "Se déconnecter" %}</span></button><span class="submit-status" role="status" aria-live="polite"></span></form>

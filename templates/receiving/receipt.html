@@ -1,0 +1,52 @@
+{% extends 'base.html' %}{% load i18n %}
+{% load presentation %}
+{% block content %}
+<a class="back-link" aria-label="{% translate "Retour aux reçus" %}" href="{% url 'receiving-records' %}">{% include 'ui/back-arrow.html' %}{% translate "Retour aux reçus" %}</a>
+<h1>{{ receipt.reference }}</h1>
+<section class="card receipt-summary" aria-label="{% translate "Informations du reçu" %}">
+  <dl>
+    <div><dt>{% translate "Fournisseur" %}</dt><dd>{{ receipt.supplier_name }}</dd></div>
+    <div><dt>{% translate "Commande" %}</dt><dd><a href="{% url 'receiving-order' receipt.order_id %}">{{ receipt.order_reference }}</a></dd></div>
+    <div><dt>{% translate "Réception" %}</dt><dd>{{ receipt.at|ui_datetime }}</dd></div>
+    <div><dt>{% translate "Enregistrée par" %}</dt><dd>{{ receipt.author }}</dd></div>
+  </dl>
+</section>
+<p class="notice">{% translate "Reçu confirmé en lecture seule. Une correction conserve toujours la déclaration d’origine." %}</p>
+<h2>{% translate "Produits reçus" %}</h2>
+<div class="receipt-lines">
+{% for line in receipt.lines %}
+  <article class="card">
+    <h3>{{ line.name }} · {{ line.unit }}</h3>
+    <p class="hint">{% translate "Déclaration initiale :" %} {{ line.initial.conforming }} {% translate "conformes," %} {{ line.initial.nonconforming }} {% translate "non conformes." %}</p>
+    <dl class="receipt-values">
+      <div><dt>{% translate "Reçus sur commande" %}</dt><dd>{{ line.effective.regular }} {{ line.unit }}</dd></div>
+      <div><dt>{% translate "Surplus déclaré" %}</dt><dd>{{ line.effective.surplus }} {{ line.unit }}</dd></div>
+      <div><dt>{% translate "Non conformes" %}</dt><dd>{{ line.effective.nonconforming }} {{ line.unit }}</dd></div>
+    </dl>
+  </article>
+{% endfor %}
+</div>
+<section class="card receipt-followup">
+  <h2>{% translate "Suivi du reçu" %}</h2>
+  <p>{% translate "Les quantités ci-dessus tiennent compte des corrections. Les surplus et non-conformes ont un suivi distinct ; ils ne sont pas des réceptions régulières." %}</p>
+  <div class="actions">
+  {% if error_case %}
+    <a class="button" href="{% url 'receiving-case' error_case.pk %}">{% translate "Examiner la vérification" %}</a>
+  {% elif user.role == 'ADMIN' %}
+    <a class="button secondary" href="{% url 'receiving-open_receipt_case' receipt.id %}">{% translate "Vérifier ce reçu" %}</a>
+  {% else %}
+    <a class="button secondary" href="{% url 'receiving-report_error' receipt.id %}">{% translate "Signaler une erreur" %}</a>
+  {% endif %}
+  </div>
+</section>
+<section class="card">
+  <h2>{% translate "Corrections" %}</h2>
+  {% for correction in receipt.corrections %}
+    <p>{{ correction.at|ui_datetime }} · {{ correction.author }} · {{ correction.message }}</p>
+  {% empty %}<p>{% translate "Aucune correction." %}</p>{% endfor %}
+</section>
+<section class="card">
+  <h2>{% translate "Dossiers associés" %}</h2>
+  {% for case in cases %}<p><a href="{% url 'receiving-case' case.id %}">{{ case.type_label }}</a> · {{ case.status_label }}</p>{% empty %}<p>{% translate "Aucun dossier." %}</p>{% endfor %}
+</section>
+{% endblock %}

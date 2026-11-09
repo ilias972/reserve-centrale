@@ -1,0 +1,31 @@
+{% extends 'base.html' %}{% load i18n %}{% load presentation %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p>{% translate "Vérifiez les problèmes signalés. Consulter un dossier ne modifie aucune quantité." %}</p>
+{% include 'cases/tabs.html' %}
+<form method="get" class="search signalement-filters">
+  <div class="filter-field"><label for="signalement-state">{% translate "Afficher" %}</label><select id="signalement-state" name="state">{% for value,label in states %}<option value="{{ value }}"{% if state == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+  <label>{% if signalement_tab == 'stock' %}{% translate "Rechercher un produit ou un auteur" %}{% else %}{% translate "Rechercher une demande, un produit ou un unité" %}{% endif %}<input type="search" name="q" value="{{ query }}" maxlength="150" list="signalement-suggestions"></label>
+  <datalist id="signalement-suggestions">{% for card in cards %}{% if card.request %}<option value="{{ card.request.reference }}"></option>{% endif %}{% for product in card.products %}<option value="{% if signalement_tab == 'stock' %}{{ product.product_name }}{% else %}{{ product.line.product_name }}{% endif %}"></option>{% endfor %}{% endfor %}</datalist>
+  <button type="submit">{% translate "Rechercher" %}</button>
+</form>
+<p class="helptext">{% translate "« À traiter » regroupe les dossiers ouverts et ceux en vérification. Les dossiers résolus restent dans l’historique." %}</p>
+<div id="signalement-results" data-live-region>
+{% for card in cards %}
+<article class="card signalement-card" aria-labelledby="signalement-{{ card.id }}">
+  <div class="signalement-heading"><h2 id="signalement-{{ card.id }}">{% if card.request %}{{ card.request.reference }} — {% endif %}{{ card.title }}</h2><span class="badge" data-status="{{ card.status }}">{{ card.status_label }}</span></div>
+  <p>{{ card.author }} · {{ card.at|ui_datetime }}</p>
+  {% if signalement_tab == 'stock' %}
+    {% if card.blocked %}<p class="notice">{% translate "Produit du lot en vérification — certaines opérations sont bloquées." %}</p>{% endif %}
+    <ul class="signalement-facts">{% for p in card.products %}<li><strong>{{ p.product_name }}</strong> ({{ p.unit }})<br>{% if p.is_calculated %}{% translate "Résultat calculé de l’opération refusée :" %} <strong>{{ p.attempted_physical }}</strong>{% translate ". Ce n’est pas un comptage physique." %}{% else %}{% translate "Quantité réellement comptée et déclarée :" %} <strong>{{ p.attempted_physical }}</strong>.{% endif %}<br>{% translate "Au signalement :" %} {{ p.physical }} {% translate "en réserve ;" %} {{ p.reserved }} {% translate "réservés." %}</li>{% endfor %}</ul>
+  {% else %}
+    <p><strong>{{ card.request.floor_name }}</strong> {% translate "· Demandeur :" %} {{ card.request.assistant_name }}<br>{% translate "Préparateur de la remise :" %} {{ card.operator }}</p>
+    <ul class="signalement-facts">{% for p in card.products %}<li><strong>{{ p.line.product_name }}</strong> — {{ p.line.quantity }} {{ p.line.unit }} {% translate "demandés ;" %} {{ p.handed }} {% translate "initialement déclarés remis ;" %} {{ p.missing }} {% translate "signalés manquants." %}</li>{% endfor %}</ul>
+    <p>{% translate "Situation actuelle :" %} <strong>{{ card.request.status_label }}</strong>.{% for p in card.request.lines %} {{ p.name }} : {{ p.delivered }} {% translate "remis," %} {{ p.reserved }} {% translate "restant réservés (" %}{{ p.unit }}).{% endfor %}</p>
+  {% endif %}
+  <div class="signalement-actions"><a class="button" href="{{ card.url }}">{% translate "Examiner le signalement" %}</a>{% if card.request %}<a href="{% url 'request-detail' card.request.id %}">{% translate "Consulter la demande" %}</a>{% endif %}</div>
+</article>
+{% empty %}<p class="card" role="status">{{ empty_message }}</p>{% endfor %}
+<nav class="pagination" aria-label="{% translate "Pages des signalements" %}">{% if previous_url %}<a href="{{ previous_url }}">{% translate "Signalements précédents" %}</a>{% endif %}{% if next_url %}<a href="{{ next_url }}">{% translate "Signalements suivants" %}</a>{% endif %}</nav>
+</div>
+{% endblock %}

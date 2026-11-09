@@ -1,0 +1,4 @@
+{% load i18n %}<nav class="tabs signalement-tabs" aria-label="{% translate "Catégories de signalements" %}">
+  <a href="{% url 'stock-cases' %}"{% if signalement_tab == 'stock' %} aria-current="page"{% endif %}>{% translate "Stock de la réserve" %}</a>
+  <a href="{% url 'delivery-issues' %}"{% if signalement_tab == 'deliveries' %} aria-current="page"{% endif %}>{% translate "Remises aux unités" %}</a>
+</nav>

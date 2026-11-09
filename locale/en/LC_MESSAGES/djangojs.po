@@ -1,0 +1,1005 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: reserve-centrale 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-08 20:32+0100\n"
+"PO-Revision-Date: 2026-11-08 00:00+0100\n"
+"Last-Translator: Ilias El Baghdadi\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/accounts/forms.js:10
+msgid ""
+"Connexion indisponible. Aucun envoi effectué. Reconnectez-vous avant de "
+"confirmer."
+msgstr "Connection unavailable. Nothing was sent. Reconnect before confirming."
+
+#: static/accounts/forms.js:13
+msgid ""
+"Vérification en cours… En cas d'interruption, consultez l'état enregistré "
+"avant une nouvelle action."
+msgstr ""
+"Checking… If the connection drops, check the saved status before trying "
+"again."
+
+#: static/accounts/forms.js:22
+msgid "mot de passe"
+msgstr "password"
+
+#: static/accounts/forms.js:25 static/accounts/forms.js:32
+msgid "Afficher"
+msgstr "Show"
+
+#: static/accounts/forms.js:26
+msgid "Afficher : %(name)s"
+msgstr "Show: %(name)s"
+
+#: static/accounts/forms.js:32
+msgid "Masquer"
+msgstr "Hide"
+
+#: static/accounts/forms.js:33
+msgid "Masquer : %(name)s"
+msgstr "Hide: %(name)s"
+
+#: static/cases/editor.js:31
+msgid ""
+"Décision enregistrée et historisée. Les données affichées ci-dessus "
+"décrivent la prévisualisation confirmée."
+msgstr ""
+"Decision saved and recorded. The information above shows the confirmed "
+"preview."
+
+#: static/cases/editor.js:34
+msgid "Consulter le dossier à jour"
+msgstr "View the current case"
+
+#: static/cases/editor.js:37
+msgid ""
+"Décision non enregistrée. Rechargez les données avant une nouvelle "
+"vérification."
+msgstr "Decision not saved. Reload the data before checking again."
+
+#: static/cases/editor.js:38
+msgid "Recharger la situation actuelle du dossier"
+msgstr "Reload the current case status"
+
+#: static/cases/editor.js:39
+msgid "Consulter le conflit de stock créé"
+msgstr "View the stock conflict"
+
+#: static/cases/editor.js:47
+msgid ""
+"Remise initiale : %(initial)s ; quantité effective actuelle : %(before)s ; "
+"quantité réelle vérifiée : %(after)s."
+msgstr "Initial issue: %(initial)s; current effective quantity: %(before)s; verified actual quantity: %(after)s."
+
+#: static/cases/editor.js:48
+msgid ""
+"%(name)s (%(unit)s) — en réserve : %(p_before)s → %(p_after)s ; réservé : %"
+"(r_before)s → %(r_after)s ; disponible : %(d_before)s → %(d_after)s. "
+"Demandé : %(requested)s ; remis : %(issued_before)s → %(issued_after)s ; "
+"clôturé : %(closed_before)s → %(closed_after)s ; reste réservé : %"
+"(open_before)s → %(open_after)s."
+msgstr "%(name)s (%(unit)s) — in stock: %(p_before)s → %(p_after)s; reserved: %(r_before)s → %(r_after)s; available: %(d_before)s → %(d_after)s. Requested: %(requested)s; issued: %(issued_before)s → %(issued_after)s; closed: %(closed_before)s → %(closed_after)s; still reserved: %(open_before)s → %(open_after)s."
+
+#: static/cases/editor.js:49
+msgid "Nouvelle"
+msgstr "New"
+
+#: static/cases/editor.js:49
+msgid "En préparation"
+msgstr "Preparing"
+
+#: static/cases/editor.js:49
+msgid "Partiellement livrée — reste à livrer"
+msgstr "Partially issued — remaining quantity to issue"
+
+#: static/cases/editor.js:49
+msgid "Clôturée — quantités non remises"
+msgstr "Closed — quantities not issued"
+
+#: static/cases/editor.js:49
+msgid "Livrée"
+msgstr "Issued"
+
+#: static/cases/editor.js:50
+msgid "État après confirmation : %(status)s"
+msgstr "Status after confirmation: %(status)s"
+
+#: static/cases/editor.js:51
+msgid "La demande restera close."
+msgstr "The request will remain closed."
+
+#: static/cases/editor.js:51
+msgid "Réouverture explicitement choisie."
+msgstr "Reopening was explicitly selected."
+
+#: static/cases/editor.js:51
+msgid "Le reliquat restera réservé."
+msgstr "The remaining quantity will stay reserved."
+
+#: static/cases/editor.js:53
+msgid ""
+"%(name)s (%(unit)s) — en réserve : %(p_before)s → %(p_after)s ; réservé : %"
+"(r_before)s → %(r_after)s ; disponible : %(d_before)s → %(d_after)s."
+msgstr "%(name)s (%(unit)s) — in stock: %(p_before)s → %(p_after)s; reserved: %(r_before)s → %(r_after)s; available: %(d_before)s → %(d_after)s."
+
+#: static/cases/editor.js:54
+msgid ""
+"%(reference)s · %(unit)s · %(requester)s : %(released)s libérés, %"
+"(reserved)s restant réservés."
+msgstr "%(reference)s · %(unit)s · %(requester)s: %(released)s released, %(reserved)s still reserved."
+
+#: static/cases/editor.js:57
+msgid "Nouvel opérateur : %(name)s."
+msgstr "New operator: %(name)s."
+
+#: static/cases/editor.js:58
+msgid ""
+"Les personnes concernées retrouveront la décision dans le suivi de leur "
+"demande. Aucune notification externe n’est envoyée."
+msgstr ""
+"People concerned can find this decision in the request history. No external "
+"notification was sent."
+
+#: static/cases/editor.js:69
+msgid ""
+"Le comptage diffère du stock enregistré. Faites d’abord vérifier et "
+"régulariser cet écart dans Stocks. Aucun mouvement ni résolution enregistré."
+msgstr ""
+"The count differs from the recorded stock. Have the difference checked and "
+"reconciled in Stock first. No movement or resolution was recorded."
+
+#: static/cases/editor.js:71
+msgid ""
+"%(name)s (%(unit)s) — comptage vérifié : %(count)s ; en réserve : %"
+"(p_before)s → %(p_after)s ; réservé : %(r_before)s → %(r_after)s ; "
+"disponible : %(d_before)s → %(d_after)s."
+msgstr "%(name)s (%(unit)s) — verified count: %(count)s; in stock: %(p_before)s → %(p_after)s; reserved: %(r_before)s → %(r_after)s; available: %(d_before)s → %(d_after)s."
+
+#: static/cases/editor.js:72
+msgid ""
+"Le dossier sera résolu. La demande, ses quantités et son état restent "
+"inchangés. Le serveur revérifiera les versions et l’absence de conflit à la "
+"confirmation."
+msgstr ""
+"The case will be resolved. The request, quantities and status will stay "
+"unchanged. The server will recheck versions and conflicts when you confirm."
+
+#: static/cases/editor.js:80
+msgid "Prévisualisation impossible. Aucun mouvement enregistré."
+msgstr "Preview unavailable. No movement was recorded."
+
+#: static/cases/editor.js:82
+msgid ""
+"Connexion indisponible. Aucune correction envoyée ; votre saisie est "
+"conservée."
+msgstr ""
+"Connection unavailable. No correction was sent; your entries are saved."
+
+#: static/inventory/editor.js:35
+msgid "Ouvrir le signalement"
+msgstr "Open the report"
+
+#: static/inventory/editor.js:51
+msgid "Corrigez les quantités signalées avant confirmation"
+msgstr "Correct the flagged quantities before confirming"
+
+#: static/inventory/editor.js:51
+msgid "Aucune modification provisoire"
+msgstr "No draft changes"
+
+#: static/inventory/editor.js:53
+msgid "%(name)s : %(physical)s → %(target)s %(unit)s"
+msgstr "%(name)s: %(physical)s → %(target)s %(unit)s"
+
+#: static/inventory/editor.js:53 static/inventory/editor.js:72
+#: static/inventory/editor.js:91 static/inventory/editor.js:95
+msgid "Non inventorié"
+msgstr "Not inventoried"
+
+#: static/inventory/editor.js:60
+msgid "Saisissez un entier positif ou nul."
+msgstr "Enter a positive integer or zero."
+
+#: static/inventory/editor.js:60
+msgid "Saisissez explicitement une quantité, zéro compris."
+msgstr "Enter a quantity explicitly, including zero."
+
+#: static/inventory/editor.js:62
+msgid "Saisissez une quantité entière, zéro compris, avant confirmation."
+msgstr "Enter a whole number, including zero, before confirming."
+
+#: static/inventory/editor.js:72 static/inventory/editor.js:91
+msgid "%(physical)s → %(target)s"
+msgstr "%(physical)s → %(target)s"
+
+#: static/inventory/editor.js:88 static/inventory/editor.js:263
+#: static/requests/cart.js:47
+msgid "Non inventorié — quantité inconnue"
+msgstr "Not inventoried — quantity unknown"
+
+#: static/inventory/editor.js:88 static/inventory/editor.js:263
+msgid "Réservé %(reserved)s · Disponible %(available)s %(unit)s"
+msgstr "Reserved %(reserved)s · Available %(available)s %(unit)s"
+
+#: static/inventory/editor.js:89
+msgid "Stock à vérifier par la gestionnaire"
+msgstr "Stock requires a manager review"
+
+#: static/inventory/editor.js:90
+msgid "Produit archivé"
+msgstr "Archived product"
+
+#: static/inventory/editor.js:95
+msgid "%(quantity)s %(unit)s"
+msgstr "%(quantity)s %(unit)s"
+
+#: static/inventory/editor.js:96
+msgid "Ouvrir la fiche produit"
+msgstr "Open product details"
+
+#: static/inventory/editor.js:96
+msgid "Fiche produit"
+msgstr "Product details"
+
+#: static/inventory/editor.js:98
+msgid "Compter ce produit"
+msgstr "Count this product"
+
+#: static/inventory/editor.js:102
+msgid "Quantité physique — %(name)s"
+msgstr "Physical quantity — %(name)s"
+
+#: static/inventory/editor.js:106 static/requests/cart.js:51
+msgid "−"
+msgstr "−"
+
+#: static/inventory/editor.js:107 static/requests/cart.js:52
+msgid "Diminuer — %(name)s"
+msgstr "Decrease — %(name)s"
+
+#: static/inventory/editor.js:108 static/requests/cart.js:51
+msgid "+"
+msgstr "+"
+
+#: static/inventory/editor.js:109 static/requests/cart.js:52
+msgid "Augmenter — %(name)s"
+msgstr "Increase — %(name)s"
+
+#: static/inventory/editor.js:113
+msgid ""
+"%(reserved)s %(unit)s sont réservés. Si le stock réel est inférieur, "
+"saisissez le total constaté puis confirmez le lot pour signaler l'écart à la "
+"gestionnaire."
+msgstr "%(reserved)s %(unit)s are reserved. If the physical stock is lower, enter the counted total and confirm the batch to report the discrepancy to the manager."
+
+#: static/inventory/editor.js:129
+msgid "Réponse non vérifiable. Consultez le statut avant de recommencer."
+msgstr "Could not verify the response. Check the status before trying again."
+
+#: static/inventory/editor.js:138
+msgid ""
+"La récupération après rechargement est indisponible sur ce navigateur. "
+"Gardez cette page ouverte jusqu'au résultat."
+msgstr ""
+"This browser cannot recover the operation after a reload. Keep this page "
+"open until the result is known."
+
+#: static/inventory/editor.js:158
+msgid "Chargement impossible."
+msgstr "Could not load the data."
+
+#: static/inventory/editor.js:169
+msgid ""
+"%(name)s : votre saisie %(target)s, serveur %(physical)s, réservé %"
+"(reserved)s %(unit)s"
+msgstr "%(name)s: your entry %(target)s, server value %(physical)s, reserved %(reserved)s %(unit)s"
+
+#: static/inventory/editor.js:177
+msgid ""
+"Lot enregistré une seule fois. Opération %(operation)s, %(confirmed_at)s."
+msgstr "Batch recorded once. Operation %(operation)s, %(confirmed_at)s."
+
+#: static/inventory/editor.js:179
+msgid "Aucune mise à jour confirmée."
+msgstr "No update was confirmed."
+
+#: static/inventory/editor.js:183
+msgid ""
+"Statut définitif reçu, mais actualisation indisponible. Rechargez les "
+"quantités avant une nouvelle saisie."
+msgstr ""
+"The final status was received, but the data could not be refreshed. Reload "
+"quantities before entering anything else."
+
+#: static/inventory/editor.js:193 static/requests/operation.js:43
+msgid "Vérification impossible. Reconnectez-vous avec le même compte."
+msgstr "Could not verify. Sign in again with the same account."
+
+#: static/inventory/editor.js:199
+msgid "Accès à revérifier."
+msgstr "Access needs to be checked again."
+
+#: static/inventory/editor.js:205
+msgid "Confirmation encore en cours. Vérifiez à nouveau."
+msgstr "Confirmation is still in progress. Check again."
+
+#: static/inventory/editor.js:205
+msgid ""
+"Intention retrouvée, résultat encore incertain. Résolvez cette confirmation "
+"avant de recommencer."
+msgstr "Intent found, but the result is still uncertain. Resolve this confirmation before trying again."
+
+#: static/inventory/editor.js:205
+msgid ""
+"Intention encore introuvable. Résolvez cette confirmation pour vérifier "
+"sûrement son abandon."
+msgstr "Intent not found yet. Resolve this confirmation to safely verify its cancellation."
+
+#: static/inventory/editor.js:205
+msgid "Statut encore non vérifiable. Vérifiez à nouveau."
+msgstr "The status is still unknown. Check again."
+
+#: static/inventory/editor.js:206
+msgid ""
+"Connexion indisponible. La confirmation reste à vérifier ; aucun nouvel "
+"envoi automatique."
+msgstr ""
+"Connection unavailable. The confirmation still needs checking; nothing will "
+"be resent automatically."
+
+#: static/inventory/editor.js:223
+msgid "Intention non inscrite."
+msgstr "Operation intent was not registered."
+
+#: static/inventory/editor.js:225
+msgid ""
+"Enregistrement non confirmé. Vérifiez son statut avant toute nouvelle action."
+msgstr "Save not confirmed. Check its status before taking another action."
+
+#: static/inventory/editor.js:227
+msgid ""
+"Connexion indisponible pendant la confirmation. Vérifiez l'enregistrement ; "
+"aucun nouvel envoi automatique."
+msgstr ""
+"Connection lost during confirmation. Check whether it was saved; nothing "
+"will be resent automatically."
+
+#: static/inventory/editor.js:232
+msgid "Modifications provisoires abandonnées. Aucun mouvement envoyé."
+msgstr "Draft changes discarded. No movement was sent."
+
+#: static/inventory/editor.js:234
+msgid ""
+"Recherche indisponible. Les modifications provisoires sont conservées en "
+"mémoire."
+msgstr "Search unavailable. Draft changes remain in memory."
+
+#: static/inventory/editor.js:235 static/requests/cart.js:107
+msgid "Chargement indisponible."
+msgstr "Loading unavailable."
+
+#: static/inventory/editor.js:241
+msgid ""
+"Valeurs serveur reprises après votre contrôle. Reconfirmez explicitement le "
+"lot si la saisie est correcte."
+msgstr ""
+"Server values restored after your review. Explicitly confirm the batch again "
+"if your entries are correct."
+
+#: static/notifications/counter.js:7 static/requests/navigation.js:15
+msgid "Compteur indisponible"
+msgstr "Counter unavailable"
+
+#: static/notifications/counter.js:18
+msgid "Reconnectez-vous pour consulter les notifications"
+msgstr "Sign in again to view notifications"
+
+#: static/notifications/push.js:11
+msgid ""
+"Enregistrement non confirmé. Rechargez cette page pour vérifier l'abonnement "
+"avant de réessayer."
+msgstr ""
+"Subscription not confirmed. Reload this page to check its status before "
+"trying again."
+
+#: static/notifications/push.js:26
+msgid "Notifications activées sur cet appareil"
+msgstr "Notifications enabled on this device"
+
+#: static/notifications/push.js:27
+msgid ""
+"Votre inscription est enregistrée. La réception dépend aussi des réglages "
+"iOS et de la connexion."
+msgstr ""
+"Your subscription is saved. Delivery also depends on iOS settings and "
+"connectivity."
+
+#: static/notifications/push.js:49
+msgid "Reconnectez-vous puis réessayez."
+msgstr "Sign in again, then try again."
+
+#: static/notifications/push.js:51
+msgid "Le Web Push n'est pas configuré."
+msgstr "Web Push is not configured."
+
+#: static/notifications/push.js:65
+msgid "Vérifiez l'état de l'abonnement en rechargeant la page."
+msgstr "Reload the page to check the subscription status."
+
+#: static/notifications/push.js:78
+msgid ""
+"L'abonnement est enregistré, mais ce navigateur ne peut pas afficher les "
+"notifications. La boîte reste disponible."
+msgstr ""
+"The subscription is saved, but this browser cannot display notifications. "
+"The in-app inbox is still available."
+
+#: static/notifications/push.js:80
+msgid ""
+"Ce navigateur ne prend pas en charge les notifications de cette application. "
+"La boîte reste disponible."
+msgstr ""
+"This browser does not support notifications for this app. The in-app inbox "
+"is still available."
+
+#: static/notifications/push.js:91
+msgid ""
+"L'abonnement est enregistré, mais les notifications ne sont pas autorisées "
+"actuellement sur cet appareil. Vérifiez ses réglages."
+msgstr ""
+"The subscription is saved, but notifications are not currently allowed on "
+"this device. Check its settings."
+
+#: static/notifications/push.js:96
+msgid ""
+"Cet appareil garde une ancienne inscription. Désactivez cet abonnement, puis "
+"réactivez les notifications."
+msgstr ""
+"This device has an older subscription. Disable it, then enable notifications "
+"again."
+
+#: static/notifications/push.js:99
+msgid ""
+"L'abonnement est enregistré. Vérifiez les réglages de notification de cet "
+"appareil."
+msgstr "The subscription is saved. Check this device’s notification settings."
+
+#: static/notifications/push.js:109
+msgid ""
+"Notifications non autorisées. Vous pouvez continuer à consulter les demandes "
+"dans l'application."
+msgstr "Notifications are not allowed. You can still view requests in the app."
+
+#: static/notifications/push.js:116
+msgid "Ancienne inscription non renouvelée. Désactivez-la puis réessayez."
+msgstr "The old subscription was not replaced. Disable it, then try again."
+
+#: static/notifications/push.js:128
+msgid "Désactiver cet abonnement"
+msgstr "Disable this subscription"
+
+#: static/notifications/push.js:132
+msgid "Abonnement non confirmé. Rechargez la page."
+msgstr "Subscription not confirmed. Reload the page."
+
+#: static/purchasing/editor.js:22
+msgid ""
+"Achat enregistré et historisé. Événement comptable enregistré ; aucun e-mail "
+"externe envoyé dans ce prototype."
+msgstr "Purchase recorded and added to history. Accounting event recorded; this prototype sent no external email."
+
+#: static/purchasing/editor.js:22
+msgid "Décision enregistrée et historisée. Les stocks n’ont pas été modifiés."
+msgstr "Decision saved and recorded. Stock was not changed."
+
+#: static/purchasing/editor.js:23
+msgid "Consulter les données à jour"
+msgstr "View current information"
+
+#: static/purchasing/editor.js:26
+msgid "Enregistrement refusé. Votre saisie est conservée."
+msgstr "Save declined. Your entries are preserved."
+
+#: static/purchasing/editor.js:31
+msgid "Référence fournisseur : %(reference)s"
+msgstr "Supplier reference: %(reference)s"
+
+#: static/purchasing/editor.js:39
+msgid "Ce produit est déjà présent. Modifiez sa quantité dans la déclaration."
+msgstr "This product is already listed. Change its quantity in the entry."
+
+#: static/purchasing/editor.js:40
+msgid "Une déclaration contient au maximum 100 produits."
+msgstr "An entry can contain up to 100 products."
+
+#: static/purchasing/editor.js:45
+msgid "Stock non inventorié : saisissez la quantité réellement achetée."
+msgstr "Stock not inventoried: enter the quantity actually purchased."
+
+#: static/purchasing/editor.js:45
+msgid ""
+"Prérempli à partir de %(target)s souhaités − %(physical)s en réserve. "
+"Vérifiez et modifiez cette quantité pour qu’elle corresponde à l’achat "
+"réellement passé."
+msgstr "Prefilled from a target of %(target)s minus %(physical)s in stock. Check and change this quantity so it matches the purchase actually made."
+
+#: static/purchasing/editor.js:46
+msgid "Quantité réellement achetée"
+msgstr "Quantity actually purchased"
+
+#: static/purchasing/editor.js:48 static/receiving/editor.js:34
+msgid "Retirer ce produit"
+msgstr "Remove this product"
+
+#: static/purchasing/editor.js:49
+msgid ""
+"Quantité conseillée : %(quantity)s %(unit)s. Cette recommandation tient "
+"aussi compte des réservations et des commandes attendues ; elle est "
+"distincte du préremplissage."
+msgstr "Suggested quantity: %(quantity)s %(unit)s. This recommendation also accounts for reservations and expected orders; it is separate from the prefilled quantity."
+
+#: static/purchasing/editor.js:51
+msgid "%(name)s ajouté à la déclaration non enregistrée."
+msgstr "%(name)s added to the unsaved report."
+
+#: static/purchasing/editor.js:66
+msgid "Sélectionnez au moins un produit et une quantité positive."
+msgstr "Select at least one product and enter a positive quantity."
+
+#: static/purchasing/editor.js:70
+msgid "%(name)s : %(quantity)s %(unit)s réellement achetés."
+msgstr "%(name)s: %(quantity)s %(unit)s actually purchased."
+
+#: static/purchasing/editor.js:71
+msgid "Montant déclaré : %(amount)s %(currency)s"
+msgstr "Declared amount: %(amount)s %(currency)s"
+
+#: static/purchasing/editor.js:82
+msgid "Recherche du produit…"
+msgstr "Searching for products…"
+
+#: static/purchasing/editor.js:87 static/purchasing/editor.js:91
+msgid "Recherche indisponible. La déclaration reste non enregistrée."
+msgstr "Search unavailable. The entry has not been saved."
+
+#: static/purchasing/editor.js:89
+msgid ""
+"Choisissez une référence exacte dans les suggestions, puis ajoutez le "
+"produit."
+msgstr "Choose an exact match from the suggestions, then add the product."
+
+#: static/receiving/editor.js:7
+msgid "Examiner les décisions qui bloquent cette correction"
+msgstr "Review decisions blocking this correction"
+
+#: static/receiving/editor.js:9
+msgid ""
+"Un reliquat reste annulé : séparez les unités valablement attendues et "
+"signalez les autres."
+msgstr "A remainder is still cancelled: separate the units that are legitimately expected and report the others."
+
+#: static/receiving/editor.js:9
+msgid ""
+"%(regular)s entreront en réserve · %(surplus)s en surplus isolé · %"
+"(nonconforming)s non conformes isolés."
+msgstr "%(regular)s will enter stock · %(surplus)s isolated as surplus · %(nonconforming)s isolated as non-conforming."
+
+#: static/receiving/editor.js:10
+msgid "Opération enregistrée et historisée. Consultez les données actualisées."
+msgstr "Operation saved and recorded. Review the updated information."
+
+#: static/receiving/editor.js:10
+msgid "Consulter le résultat"
+msgstr "View result"
+
+#: static/receiving/editor.js:10
+msgid "Opération refusée. Votre saisie est conservée."
+msgstr "Operation declined. Your entries are preserved."
+
+#: static/receiving/editor.js:28
+msgid "Lecture indisponible."
+msgstr "Could not retrieve the data."
+
+#: static/receiving/editor.js:31
+msgid "Aperçu refusé."
+msgstr "Preview declined."
+
+#: static/receiving/editor.js:31
+msgid "En attente"
+msgstr "Waiting"
+
+#: static/receiving/editor.js:31
+msgid "Partiellement reçue"
+msgstr "Partially received"
+
+#: static/receiving/editor.js:31
+msgid "Reçue"
+msgstr "Received"
+
+#: static/receiving/editor.js:31
+msgid "Clôturée, reliquat annulé"
+msgstr "Closed, remaining quantity cancelled"
+
+#: static/receiving/editor.js:31
+msgid "Annulée sans réception"
+msgstr "Cancelled without receipt"
+
+#: static/receiving/editor.js:31
+msgid "État commande : %(before)s → %(after)s"
+msgstr "Order status: %(before)s → %(after)s"
+
+#: static/receiving/editor.js:31
+msgid ""
+"%(name)s · %(unit)s : quantité régulière %(regular_before)s → %"
+"(regular_after)s, en réserve %(physical_before)s → %(physical_after)s, "
+"réservés %(reserved_before)s → %(reserved_after)s, disponibles %"
+"(available_before)s → %(available_after)s, reçus %(received_before)s → %"
+"(received_after)s, attendus %(waiting_before)s → %(waiting_after)s."
+msgstr "%(name)s · %(unit)s: regular quantity %(regular_before)s → %(regular_after)s, in stock %(physical_before)s → %(physical_after)s, reserved %(reserved_before)s → %(reserved_after)s, available %(available_before)s → %(available_after)s, received %(received_before)s → %(received_after)s, expected %(waiting_before)s → %(waiting_after)s."
+
+#: static/receiving/editor.js:31
+msgid ""
+"Isolation %(kind)s : %(before)s → %(after)s restants ; %(accepted)s déjà "
+"acceptés."
+msgstr "Isolated %(kind)s: %(before)s → %(after)s remaining; %(accepted)s already accepted."
+
+#: static/receiving/editor.js:31
+msgid "surplus"
+msgstr "surplus"
+
+#: static/receiving/editor.js:31
+msgid "non-conformes"
+msgstr "non-conforming goods"
+
+#: static/receiving/editor.js:31
+msgid "Aperçu indisponible. Aucun mouvement effectué."
+msgstr "Preview unavailable. No movement was made."
+
+#: static/receiving/editor.js:33
+msgid "Nouvelle arrivée, sans dossier d’isolation antérieur"
+msgstr "New delivery, with no earlier quarantine case"
+
+#: static/receiving/editor.js:33
+msgid "Colis déjà isolé · %(reference)s"
+msgstr "Previously isolated delivery · %(reference)s"
+
+#: static/receiving/editor.js:33
+msgid "%(waiting)s encore attendus · %(cancelled)s annulés"
+msgstr "%(waiting)s still expected · %(cancelled)s cancelled"
+
+#: static/receiving/editor.js:33
+msgid ""
+"Quantités attendues actualisées. Votre saisie provisoire est conservée : "
+"vérifiez-la avant de confirmer."
+msgstr ""
+"Expected quantities updated. Your draft entries are preserved; check them "
+"before confirming."
+
+#: static/receiving/editor.js:33
+msgid "Actualisation indisponible. Aucun envoi."
+msgstr "Refresh unavailable. Nothing was sent."
+
+#: static/receiving/editor.js:34
+msgid "Choisissez une référence exacte dans les suggestions."
+msgstr "Choose an exact match from the suggestions."
+
+#: static/receiving/editor.js:34
+msgid "Ce produit figure déjà dans le constat."
+msgstr "This product is already in the report."
+
+#: static/receiving/editor.js:34
+msgid "Quantité identifiable — facultative"
+msgstr "Identifiable quantity — optional"
+
+#: static/receiving/editor.js:34
+msgid "Produit ajouté au constat non enregistré."
+msgstr "Product added to the unsaved report."
+
+#: static/receiving/editor.js:34
+msgid "Recherche indisponible."
+msgstr "Search unavailable."
+
+#: static/reporting/export.js:11
+msgid "Connexion indisponible. Reconnectez-vous avant de demander le fichier."
+msgstr "Connection unavailable. Reconnect before requesting the file."
+
+#: static/reporting/export.js:13
+msgid "Génération du fichier Excel en cours…"
+msgstr "Generating the Excel file…"
+
+#: static/reporting/export.js:19
+msgid ""
+"Le fichier n’a pas pu être généré. Réduisez les filtres ou reconnectez-vous."
+msgstr "The file could not be generated. Narrow the filters or reconnect."
+
+#: static/reporting/export.js:21
+msgid "L’accès a changé. Reconnectez-vous avant de relancer l’export."
+msgstr "Your access changed. Sign in again before retrying the export."
+
+#: static/reporting/export.js:28
+msgid ""
+"Fichier Excel généré et transmis au navigateur. Vous pouvez le retrouver "
+"dans vos téléchargements."
+msgstr ""
+"Excel file generated and sent to the browser. Find it in your downloads."
+
+#: static/reporting/export.js:30
+msgid ""
+"Réponse réseau interrompue : aucun téléchargement confirmé. Reconnectez-vous "
+"puis relancez l’export ; les quantités ne sont pas modifiées."
+msgstr "Network response interrupted: no download was confirmed. Reconnect and start the export again; quantities have not changed."
+
+#: static/requests/cancel.js:11
+msgid "Annulation non confirmée."
+msgstr "Cancellation not confirmed."
+
+#: static/requests/cancel.js:11 static/requests/cancel.js:25
+#: static/requests/delivery.js:18 static/requests/delivery.js:58
+#: static/requests/refusal.js:18 static/requests/refusal.js:37
+msgid "Actualiser la demande"
+msgstr "Refresh the request"
+
+#: static/requests/cancel.js:23 static/requests/delivery.js:56
+msgid ""
+"Cette demande a changé. Votre saisie est conservée, mais actualisez la "
+"demande avant toute confirmation."
+msgstr ""
+"This request has changed. Your entries are preserved; refresh the request "
+"before confirming anything."
+
+#: static/requests/cart.js:15
+msgid "Aucun produit sélectionné"
+msgstr "No products selected"
+
+#: static/requests/cart.js:26
+msgid "Retirer"
+msgstr "Remove"
+
+#: static/requests/cart.js:27
+msgid "Retirer — %(name)s"
+msgstr "Remove — %(name)s"
+
+#: static/requests/cart.js:29
+msgid "Quantité à recontrôler : disponibilité ou droit modifié."
+msgstr "Quantity to review: availability or permission changed."
+
+#: static/requests/cart.js:35
+msgid "Une demande peut contenir jusqu'à 100 références."
+msgstr "A request can contain up to 100 products."
+
+#: static/requests/cart.js:47
+msgid "Disponible : %(quantity)s %(unit)s"
+msgstr "Available: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:48
+msgid "Maximum par demande : %(quantity)s %(unit)s"
+msgstr "Maximum per request: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:48
+msgid "Plafond non configuré."
+msgstr "No request limit is configured."
+
+#: static/requests/cart.js:56
+msgid "Quantité demandée — %(name)s"
+msgstr "Requested quantity — %(name)s"
+
+#: static/requests/cart.js:74
+msgid "Catalogue non disponible"
+msgstr "Catalog unavailable"
+
+#: static/requests/cart.js:81
+msgid "Demande %(reference)s envoyée. Quantités réservées."
+msgstr "Request %(reference)s submitted. Quantities reserved."
+
+#: static/requests/cart.js:82
+msgid "Suivre cette demande"
+msgstr "View this request"
+
+#: static/requests/cart.js:84
+msgid "Aucune demande envoyée."
+msgstr "No request was submitted."
+
+#: static/requests/cart.js:87
+msgid "%(product)s: %(message)s Maximum possible: %(maximum)s."
+msgstr "%(product)s: %(message)s Maximum allowed: %(maximum)s."
+
+#: static/requests/cart.js:87
+msgid "Produit sélectionné"
+msgstr "Selected product"
+
+#: static/requests/cart.js:94
+msgid ""
+"Disponibilités non actualisées — données potentiellement obsolètes. Vérifiez "
+"la connexion avant une nouvelle demande."
+msgstr ""
+"Availability was not refreshed; data may be out of date. Check your "
+"connection before submitting another request."
+
+#: static/requests/cart.js:100
+msgid "%(product)s: %(quantity)s %(unit)s"
+msgstr "%(product)s: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:106
+msgid ""
+"Recherche indisponible. Sélection conservée en mémoire ; données "
+"potentiellement non actualisées."
+msgstr ""
+"Search unavailable. Your selection remains in memory; data may be out of "
+"date."
+
+#: static/requests/delivery.js:18
+msgid "Remise non confirmée."
+msgstr "Delivery not confirmed."
+
+#: static/requests/delivery.js:32
+msgid ""
+"%(name)s : %(delivered)s %(unit)s remis ; %(missing)s manquants clôturés ; %"
+"(remaining)s restant réservés."
+msgstr "%(name)s: %(delivered)s %(unit)s issued; %(missing)s missing units closed; %(remaining)s still reserved."
+
+#: static/requests/delivery.js:35
+msgid ""
+"Vérifiez les quantités entières et le choix de traitement du reste. Aucune "
+"remise enregistrée."
+msgstr ""
+"Check whole-number quantities and how to handle the remainder. No delivery "
+"was recorded."
+
+#: static/requests/delivery.js:40
+msgid ""
+"Le stock en réserve diminuera de %(delivered)s unités remises et de %"
+"(missing)s unités introuvables. Les réservations correspondantes seront "
+"libérées et les reliquats clôturés. La responsable recevra un signalement. "
+"Ne choisissez pas ce traitement pour un simple refus."
+msgstr "Stock will decrease by %(delivered)s units issued and %(missing)s units physically missing. The corresponding reservations will be released and remaining quantities closed. The manager will receive a report. Do not choose this option for a simple refusal."
+
+#: static/requests/delivery.js:41
+msgid ""
+"Le stock en réserve diminuera seulement des %(delivered)s unités réellement "
+"remises. Le reste demeure réservé, sans correction pour manque. Aucune "
+"seconde déduction dans Stocks."
+msgstr "Stock will decrease only by the %(delivered)s units actually issued. The rest remains reserved, with no shortage adjustment. It will not be deducted again in Stock."
+
+#: static/requests/delivery_error.js:4
+msgid "Signalement non confirmé."
+msgstr "Report not confirmed."
+
+#: static/requests/operation.js:28
+msgid ""
+"La reprise après rechargement est indisponible. Gardez cette page ouverte "
+"jusqu'au résultat."
+msgstr ""
+"This browser cannot recover the operation after a reload. Keep this page "
+"open until the result is known."
+
+#: static/requests/operation.js:52
+msgid "Intention encore introuvable. Résolvez cet envoi avant de recommencer."
+msgstr "Intent not found yet. Resolve this submission before trying again."
+
+#: static/requests/operation.js:52
+msgid ""
+"Résultat encore incertain. Résolvez cet envoi ou vérifiez à nouveau ; aucune "
+"nouvelle demande n'a été envoyée automatiquement."
+msgstr "The result is still uncertain. Resolve this submission or check again; no new request was sent automatically."
+
+#: static/requests/operation.js:52
+msgid "Confirmation en cours. Vérifiez à nouveau."
+msgstr "Confirmation in progress. Check again."
+
+#: static/requests/operation.js:54
+msgid ""
+"Connexion indisponible. Vérifiez l'enregistrement avant de recommencer ; "
+"aucun envoi automatique."
+msgstr ""
+"Connection unavailable. Check whether it was recorded before trying again; "
+"nothing will be resent automatically."
+
+#: static/requests/operation.js:68
+msgid "Inscription non confirmée. Vérifiez l'enregistrement."
+msgstr "Inscription non confirmée. Vérifiez l'enregistrement."
+
+#: static/requests/operation.js:70
+msgid "Envoi non confirmé. Vérifiez l'enregistrement avant de recommencer."
+msgstr "Envoi non confirmé. Vérifiez l'enregistrement avant de recommencer."
+
+#: static/requests/operation.js:72
+msgid ""
+"Connexion indisponible pendant l'envoi. Vérifiez l'enregistrement ; aucun "
+"envoi automatique."
+msgstr ""
+"Connection lost while submitting. Check whether it was recorded; nothing "
+"will be resent automatically."
+
+#: static/requests/refusal.js:17
+msgid "Refus non confirmé."
+msgstr "Refusal not confirmed."
+
+#: static/requests/refusal.js:36
+msgid ""
+"Cette demande a changé. Votre justification est conservée ; actualisez la "
+"demande avant de confirmer."
+msgstr ""
+"This request has changed. Your reason is preserved; refresh the request "
+"before confirming."
+
+#: static/ui/live.js:18 static/ui/live.js:61
+msgid ""
+"Hors connexion — données potentiellement obsolètes. Aucun envoi automatique."
+msgstr "Offline — data may be out of date. Nothing will be sent automatically."
+
+#: static/ui/live.js:27
+msgid ""
+"Actualisation indisponible — données potentiellement obsolètes. Vérifiez "
+"votre connexion ou reconnectez-vous."
+msgstr ""
+"Refresh unavailable; data may be out of date. Check your connection or sign "
+"in again."
+
+#: static/ui/live.js:34
+msgid "Lecture extérieure interdite"
+msgstr "External reads are not allowed"
+
+#: static/ui/live.js:36
+msgid "Lecture non autorisée ou indisponible"
+msgstr "Read access denied or unavailable"
+
+#: static/ui/live.js:78
+msgid "Session à revérifier"
+msgstr "Session needs to be checked again"
+
+#: static/ui/search.js:10
+msgid "Suggestions de recherche"
+msgstr "Search suggestions"
+
+#: static/ui/search.js:20 static/ui/search.js:39
+msgid "Suggestions indisponibles. Vous pouvez lancer la recherche."
+msgstr "Suggestions unavailable. You can submit the search instead."
+
+#: static/ui/search.js:24
+msgid "Recherche de suggestions…"
+msgstr "Searching suggestions…"
+
+#: static/ui/search.js:27
+msgid "Suggestions indisponibles"
+msgstr "Suggestions unavailable"
+
+#: static/ui/search.js:29
+msgid "flèches puis Entrée, ou toucher un résultat."
+msgstr "Use the arrow keys and Enter, or select a result."
+
+#: static/ui/search.js:29
+msgid "Aucune suggestion. Vous pouvez lancer la recherche."
+msgstr "No suggestions. You can submit the search instead."
+
+#: static/ui/search.js:34
+msgid "Sans photo"
+msgstr "No photo"
+
+#: static/ui/shell.js:5
+msgid "Date indisponible"
+msgstr "Date unavailable"
+
+#: static/ui/shell.js:31
+msgid "Ouvrir la navigation"
+msgstr "Open navigation"
+
+#: static/ui/shell.js:40
+msgid "Fermer la navigation"
+msgstr "Close navigation"
+
+#: static/ui/tables.js:12
+msgid ""
+"Faites défiler le tableau horizontalement pour consulter les autres colonnes."
+msgstr "Scroll the table horizontally to see the other columns."

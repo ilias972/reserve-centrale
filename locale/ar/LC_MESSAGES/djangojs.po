@@ -1,0 +1,988 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: reserve-centrale 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-08 20:32+0100\n"
+"PO-Revision-Date: 2026-11-08 00:00+0100\n"
+"Last-Translator: Ilias El Baghdadi\n"
+"Language-Team: العربية\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0?0:n==1?1:n==2?2:n%100>=3&&n%100<=10?"
+"3:n%100>=11&&n%100<=99?4:5;\n"
+
+#: static/accounts/forms.js:10
+msgid ""
+"Connexion indisponible. Aucun envoi effectué. Reconnectez-vous avant de "
+"confirmer."
+msgstr "الاتصال غير متاح. لم يُرسل شيء. أعد الاتصال قبل التأكيد."
+
+#: static/accounts/forms.js:13
+msgid ""
+"Vérification en cours… En cas d'interruption, consultez l'état enregistré "
+"avant une nouvelle action."
+msgstr ""
+"جارٍ التحقق… إذا انقطع الاتصال، فتحقق من الحالة المسجلة قبل المحاولة مجددًا."
+
+#: static/accounts/forms.js:22
+msgid "mot de passe"
+msgstr "كلمة المرور"
+
+#: static/accounts/forms.js:25 static/accounts/forms.js:32
+msgid "Afficher"
+msgstr "عرض"
+
+#: static/accounts/forms.js:26
+msgid "Afficher : %(name)s"
+msgstr "إظهار: %(name)s"
+
+#: static/accounts/forms.js:32
+msgid "Masquer"
+msgstr "إخفاء"
+
+#: static/accounts/forms.js:33
+msgid "Masquer : %(name)s"
+msgstr "إخفاء: %(name)s"
+
+#: static/cases/editor.js:31
+msgid ""
+"Décision enregistrée et historisée. Les données affichées ci-dessus "
+"décrivent la prévisualisation confirmée."
+msgstr "تم حفظ القرار وتسجيله. تعرض المعلومات أعلاه المعاينة التي تم تأكيدها."
+
+#: static/cases/editor.js:34
+msgid "Consulter le dossier à jour"
+msgstr "عرض الملف الحالي"
+
+#: static/cases/editor.js:37
+msgid ""
+"Décision non enregistrée. Rechargez les données avant une nouvelle "
+"vérification."
+msgstr "لم يُحفظ القرار. أعد تحميل البيانات قبل التحقق مجددًا."
+
+#: static/cases/editor.js:38
+msgid "Recharger la situation actuelle du dossier"
+msgstr "إعادة تحميل حالة الملف الحالية"
+
+#: static/cases/editor.js:39
+msgid "Consulter le conflit de stock créé"
+msgstr "عرض تعارض المخزون"
+
+#: static/cases/editor.js:47
+msgid ""
+"Remise initiale : %(initial)s ; quantité effective actuelle : %(before)s ; "
+"quantité réelle vérifiée : %(after)s."
+msgstr "التسليم الأولي: %(initial)s؛ الكمية الفعلية الحالية: %(before)s؛ الكمية الحقيقية التي تم التحقق منها: %(after)s."
+
+#: static/cases/editor.js:48
+msgid ""
+"%(name)s (%(unit)s) — en réserve : %(p_before)s → %(p_after)s ; réservé : %"
+"(r_before)s → %(r_after)s ; disponible : %(d_before)s → %(d_after)s. "
+"Demandé : %(requested)s ; remis : %(issued_before)s → %(issued_after)s ; "
+"clôturé : %(closed_before)s → %(closed_after)s ; reste réservé : %"
+"(open_before)s → %(open_after)s."
+msgstr "%(name)s (%(unit)s) — في المخزون: %(p_before)s → %(p_after)s؛ محجوز: %(r_before)s → %(r_after)s؛ متاح: %(d_before)s → %(d_after)s. مطلوب: %(requested)s؛ تم تسليمه: %(issued_before)s → %(issued_after)s؛ أُغلق: %(closed_before)s → %(closed_after)s؛ ما زال محجوزًا: %(open_before)s → %(open_after)s."
+
+#: static/cases/editor.js:49
+msgid "Nouvelle"
+msgstr "جديد"
+
+#: static/cases/editor.js:49
+msgid "En préparation"
+msgstr "قيد التحضير"
+
+#: static/cases/editor.js:49
+msgid "Partiellement livrée — reste à livrer"
+msgstr "تم تسليم جزء منها — ما زال جزء للتسليم"
+
+#: static/cases/editor.js:49
+msgid "Clôturée — quantités non remises"
+msgstr "مغلقة — كميات لم تُسلَّم"
+
+#: static/cases/editor.js:49
+msgid "Livrée"
+msgstr "تم تسليمها"
+
+#: static/cases/editor.js:50
+msgid "État après confirmation : %(status)s"
+msgstr "الحالة بعد التأكيد: %(status)s"
+
+#: static/cases/editor.js:51
+msgid "La demande restera close."
+msgstr "سيظل الطلب مغلقًا."
+
+#: static/cases/editor.js:51
+msgid "Réouverture explicitement choisie."
+msgstr "تم اختيار إعادة الفتح صراحةً."
+
+#: static/cases/editor.js:51
+msgid "Le reliquat restera réservé."
+msgstr "ستظل الكمية المتبقية محجوزة."
+
+#: static/cases/editor.js:53
+msgid ""
+"%(name)s (%(unit)s) — en réserve : %(p_before)s → %(p_after)s ; réservé : %"
+"(r_before)s → %(r_after)s ; disponible : %(d_before)s → %(d_after)s."
+msgstr "%(name)s (%(unit)s) — في المخزون: %(p_before)s → %(p_after)s؛ محجوز: %(r_before)s → %(r_after)s؛ متاح: %(d_before)s → %(d_after)s."
+
+#: static/cases/editor.js:54
+msgid ""
+"%(reference)s · %(unit)s · %(requester)s : %(released)s libérés, %"
+"(reserved)s restant réservés."
+msgstr "%(reference)s · %(unit)s · %(requester)s: تم تحرير %(released)s، وما زال %(reserved)s محجوزًا."
+
+#: static/cases/editor.js:57
+msgid "Nouvel opérateur : %(name)s."
+msgstr "المسؤول الجديد: %(name)s."
+
+#: static/cases/editor.js:58
+msgid ""
+"Les personnes concernées retrouveront la décision dans le suivi de leur "
+"demande. Aucune notification externe n’est envoyée."
+msgstr ""
+"يمكن للأشخاص المعنيين العثور على القرار في سجل طلباتهم. لم يُرسل أي إشعار "
+"خارجي."
+
+#: static/cases/editor.js:69
+msgid ""
+"Le comptage diffère du stock enregistré. Faites d’abord vérifier et "
+"régulariser cet écart dans Stocks. Aucun mouvement ni résolution enregistré."
+msgstr ""
+"يختلف الجرد عن المخزون المسجل. اطلب التحقق من الفرق وتسويته أولًا من قسم "
+"المخزون. لم يُسجل أي حركة أو حل."
+
+#: static/cases/editor.js:71
+msgid ""
+"%(name)s (%(unit)s) — comptage vérifié : %(count)s ; en réserve : %"
+"(p_before)s → %(p_after)s ; réservé : %(r_before)s → %(r_after)s ; "
+"disponible : %(d_before)s → %(d_after)s."
+msgstr "%(name)s (%(unit)s) — العدد المتحقق منه: %(count)s؛ في المخزون: %(p_before)s → %(p_after)s؛ محجوز: %(r_before)s → %(r_after)s؛ متاح: %(d_before)s → %(d_after)s."
+
+#: static/cases/editor.js:72
+msgid ""
+"Le dossier sera résolu. La demande, ses quantités et son état restent "
+"inchangés. Le serveur revérifiera les versions et l’absence de conflit à la "
+"confirmation."
+msgstr ""
+"سيُحل الملف. سيبقى الطلب وكمياته وحالته دون تغيير. سيتحقق الخادم مجددًا من "
+"الإصدارات ومن عدم وجود تعارض عند التأكيد."
+
+#: static/cases/editor.js:80
+msgid "Prévisualisation impossible. Aucun mouvement enregistré."
+msgstr "تعذرت المعاينة. لم تُسجل أي حركة."
+
+#: static/cases/editor.js:82
+msgid ""
+"Connexion indisponible. Aucune correction envoyée ; votre saisie est "
+"conservée."
+msgstr "الاتصال غير متاح. لم يُرسل أي تصحيح؛ تم الاحتفاظ بمدخلاتك."
+
+#: static/inventory/editor.js:35
+msgid "Ouvrir le signalement"
+msgstr "فتح البلاغ"
+
+#: static/inventory/editor.js:51
+msgid "Corrigez les quantités signalées avant confirmation"
+msgstr "صحّح الكميات المشار إليها قبل التأكيد"
+
+#: static/inventory/editor.js:51
+msgid "Aucune modification provisoire"
+msgstr "لا توجد تغييرات غير محفوظة"
+
+#: static/inventory/editor.js:53
+msgid "%(name)s : %(physical)s → %(target)s %(unit)s"
+msgstr "%(name)s: %(physical)s → %(target)s %(unit)s"
+
+#: static/inventory/editor.js:53 static/inventory/editor.js:72
+#: static/inventory/editor.js:91 static/inventory/editor.js:95
+msgid "Non inventorié"
+msgstr "غير محصور"
+
+#: static/inventory/editor.js:60
+msgid "Saisissez un entier positif ou nul."
+msgstr "أدخل عددًا صحيحًا موجبًا أو صفرًا."
+
+#: static/inventory/editor.js:60
+msgid "Saisissez explicitement une quantité, zéro compris."
+msgstr "أدخل كمية صراحةً، بما في ذلك الصفر."
+
+#: static/inventory/editor.js:62
+msgid "Saisissez une quantité entière, zéro compris, avant confirmation."
+msgstr "أدخل عددًا صحيحًا، بما في ذلك الصفر، قبل التأكيد."
+
+#: static/inventory/editor.js:72 static/inventory/editor.js:91
+msgid "%(physical)s → %(target)s"
+msgstr "%(physical)s → %(target)s"
+
+#: static/inventory/editor.js:88 static/inventory/editor.js:263
+#: static/requests/cart.js:47
+msgid "Non inventorié — quantité inconnue"
+msgstr "لم يتم جرده — الكمية غير معروفة"
+
+#: static/inventory/editor.js:88 static/inventory/editor.js:263
+msgid "Réservé %(reserved)s · Disponible %(available)s %(unit)s"
+msgstr "محجوز %(reserved)s · متاح %(available)s %(unit)s"
+
+#: static/inventory/editor.js:89
+msgid "Stock à vérifier par la gestionnaire"
+msgstr "المخزون يحتاج إلى مراجعة المسؤول"
+
+#: static/inventory/editor.js:90
+msgid "Produit archivé"
+msgstr "منتج مؤرشف"
+
+#: static/inventory/editor.js:95
+msgid "%(quantity)s %(unit)s"
+msgstr "%(quantity)s %(unit)s"
+
+#: static/inventory/editor.js:96
+msgid "Ouvrir la fiche produit"
+msgstr "فتح تفاصيل المنتج"
+
+#: static/inventory/editor.js:96
+msgid "Fiche produit"
+msgstr "تفاصيل المنتج"
+
+#: static/inventory/editor.js:98
+msgid "Compter ce produit"
+msgstr "جرد هذا المنتج"
+
+#: static/inventory/editor.js:102
+msgid "Quantité physique — %(name)s"
+msgstr "الكمية الفعلية — %(name)s"
+
+#: static/inventory/editor.js:106 static/requests/cart.js:51
+msgid "−"
+msgstr "−"
+
+#: static/inventory/editor.js:107 static/requests/cart.js:52
+msgid "Diminuer — %(name)s"
+msgstr "إنقاص — %(name)s"
+
+#: static/inventory/editor.js:108 static/requests/cart.js:51
+msgid "+"
+msgstr "+"
+
+#: static/inventory/editor.js:109 static/requests/cart.js:52
+msgid "Augmenter — %(name)s"
+msgstr "زيادة — %(name)s"
+
+#: static/inventory/editor.js:113
+msgid ""
+"%(reserved)s %(unit)s sont réservés. Si le stock réel est inférieur, "
+"saisissez le total constaté puis confirmez le lot pour signaler l'écart à la "
+"gestionnaire."
+msgstr "هناك %(reserved)s %(unit)s محجوزة. إذا كان المخزون الفعلي أقل، فأدخل الكمية التي تم عدّها وأكّد المجموعة للإبلاغ عن الفرق إلى المسؤولة."
+
+#: static/inventory/editor.js:129
+msgid "Réponse non vérifiable. Consultez le statut avant de recommencer."
+msgstr "تعذر التحقق من الاستجابة. راجع الحالة قبل المحاولة مجددًا."
+
+#: static/inventory/editor.js:138
+msgid ""
+"La récupération après rechargement est indisponible sur ce navigateur. "
+"Gardez cette page ouverte jusqu'au résultat."
+msgstr ""
+"لا يمكن استعادة العملية بعد إعادة التحميل في هذا المتصفح. أبقِ الصفحة مفتوحة "
+"حتى ظهور النتيجة."
+
+#: static/inventory/editor.js:158
+msgid "Chargement impossible."
+msgstr "تعذر تحميل البيانات."
+
+#: static/inventory/editor.js:169
+msgid ""
+"%(name)s : votre saisie %(target)s, serveur %(physical)s, réservé %"
+"(reserved)s %(unit)s"
+msgstr "%(name)s: الكمية التي أدخلتها %(target)s، قيمة الخادم %(physical)s، المحجوز %(reserved)s %(unit)s"
+
+#: static/inventory/editor.js:177
+msgid ""
+"Lot enregistré une seule fois. Opération %(operation)s, %(confirmed_at)s."
+msgstr "تم تسجيل المجموعة مرة واحدة. العملية %(operation)s، %(confirmed_at)s."
+
+#: static/inventory/editor.js:179
+msgid "Aucune mise à jour confirmée."
+msgstr "لم يتم تأكيد أي تحديث."
+
+#: static/inventory/editor.js:183
+msgid ""
+"Statut définitif reçu, mais actualisation indisponible. Rechargez les "
+"quantités avant une nouvelle saisie."
+msgstr ""
+"وصلت الحالة النهائية، لكن تعذر تحديث البيانات. أعد تحميل الكميات قبل إدخال "
+"أي شيء آخر."
+
+#: static/inventory/editor.js:193 static/requests/operation.js:43
+msgid "Vérification impossible. Reconnectez-vous avec le même compte."
+msgstr "تعذر التحقق. سجّل الدخول مجددًا بالحساب نفسه."
+
+#: static/inventory/editor.js:199
+msgid "Accès à revérifier."
+msgstr "يجب التحقق من صلاحية الوصول مجددًا."
+
+#: static/inventory/editor.js:205
+msgid "Confirmation encore en cours. Vérifiez à nouveau."
+msgstr "لا يزال التأكيد جاريًا. تحقّق مجددًا."
+
+#: static/inventory/editor.js:205
+msgid ""
+"Intention retrouvée, résultat encore incertain. Résolvez cette confirmation "
+"avant de recommencer."
+msgstr "تم العثور على العملية المقصودة، لكن النتيجة ما زالت غير مؤكدة. احسم حالة هذا التأكيد قبل المحاولة مجددًا."
+
+#: static/inventory/editor.js:205
+msgid ""
+"Intention encore introuvable. Résolvez cette confirmation pour vérifier "
+"sûrement son abandon."
+msgstr "لم يتم العثور على العملية المقصودة بعد. احسم حالة هذا التأكيد للتحقق بأمان من إلغائه."
+
+#: static/inventory/editor.js:205
+msgid "Statut encore non vérifiable. Vérifiez à nouveau."
+msgstr "ما زالت الحالة غير مؤكدة. تحقق مجددًا."
+
+#: static/inventory/editor.js:206
+msgid ""
+"Connexion indisponible. La confirmation reste à vérifier ; aucun nouvel "
+"envoi automatique."
+msgstr ""
+"الاتصال غير متاح. لا يزال التأكيد بحاجة إلى التحقق؛ لن يُعاد الإرسال تلقائيًا."
+
+#: static/inventory/editor.js:223
+msgid "Intention non inscrite."
+msgstr "لم يُسجل طلب العملية."
+
+#: static/inventory/editor.js:225
+msgid ""
+"Enregistrement non confirmé. Vérifiez son statut avant toute nouvelle action."
+msgstr "لم يتم تأكيد الحفظ. تحقق من الحالة قبل اتخاذ إجراء آخر."
+
+#: static/inventory/editor.js:227
+msgid ""
+"Connexion indisponible pendant la confirmation. Vérifiez l'enregistrement ; "
+"aucun nouvel envoi automatique."
+msgstr ""
+"انقطع الاتصال أثناء التأكيد. تحقق مما إذا كانت العملية قد سُجلت؛ لن يُعاد "
+"الإرسال تلقائيًا."
+
+#: static/inventory/editor.js:232
+msgid "Modifications provisoires abandonnées. Aucun mouvement envoyé."
+msgstr "تم إلغاء التغييرات المؤقتة. لم تُرسل أي حركة."
+
+#: static/inventory/editor.js:234
+msgid ""
+"Recherche indisponible. Les modifications provisoires sont conservées en "
+"mémoire."
+msgstr "البحث غير متاح. لا تزال التغييرات المؤقتة محفوظة في الذاكرة."
+
+#: static/inventory/editor.js:235 static/requests/cart.js:107
+msgid "Chargement indisponible."
+msgstr "التحميل غير متاح."
+
+#: static/inventory/editor.js:241
+msgid ""
+"Valeurs serveur reprises après votre contrôle. Reconfirmez explicitement le "
+"lot si la saisie est correcte."
+msgstr ""
+"تم استرجاع قيم الخادم بعد مراجعتك. أكّد الدفعة صراحةً مرة أخرى إذا كانت "
+"مدخلاتك صحيحة."
+
+#: static/notifications/counter.js:7 static/requests/navigation.js:15
+msgid "Compteur indisponible"
+msgstr "العداد غير متاح"
+
+#: static/notifications/counter.js:18
+msgid "Reconnectez-vous pour consulter les notifications"
+msgstr "سجّل الدخول مجددًا لعرض الإشعارات"
+
+#: static/notifications/push.js:11
+msgid ""
+"Enregistrement non confirmé. Rechargez cette page pour vérifier l'abonnement "
+"avant de réessayer."
+msgstr ""
+"لم يتم تأكيد الاشتراك. أعد تحميل الصفحة للتحقق من حالته قبل المحاولة مجددًا."
+
+#: static/notifications/push.js:26
+msgid "Notifications activées sur cet appareil"
+msgstr "الإشعارات مفعّلة على هذا الجهاز"
+
+#: static/notifications/push.js:27
+msgid ""
+"Votre inscription est enregistrée. La réception dépend aussi des réglages "
+"iOS et de la connexion."
+msgstr "تم حفظ اشتراكك. يعتمد الاستلام أيضاً على إعدادات iOS والاتصال."
+
+#: static/notifications/push.js:49
+msgid "Reconnectez-vous puis réessayez."
+msgstr "سجّل الدخول مجددًا ثم أعد المحاولة."
+
+#: static/notifications/push.js:51
+msgid "Le Web Push n'est pas configuré."
+msgstr "إشعارات الويب غير مهيأة."
+
+#: static/notifications/push.js:65
+msgid "Vérifiez l'état de l'abonnement en rechargeant la page."
+msgstr "أعد تحميل الصفحة للتحقق من حالة الاشتراك."
+
+#: static/notifications/push.js:78
+msgid ""
+"L'abonnement est enregistré, mais ce navigateur ne peut pas afficher les "
+"notifications. La boîte reste disponible."
+msgstr ""
+"تم حفظ الاشتراك، لكن هذا المتصفح لا يستطيع عرض الإشعارات. يظل صندوق "
+"الإشعارات داخل التطبيق متاحًا."
+
+#: static/notifications/push.js:80
+msgid ""
+"Ce navigateur ne prend pas en charge les notifications de cette application. "
+"La boîte reste disponible."
+msgstr ""
+"هذا المتصفح لا يدعم إشعارات التطبيق. يظل صندوق الإشعارات داخل التطبيق متاحًا."
+
+#: static/notifications/push.js:91
+msgid ""
+"L'abonnement est enregistré, mais les notifications ne sont pas autorisées "
+"actuellement sur cet appareil. Vérifiez ses réglages."
+msgstr ""
+"تم حفظ الاشتراك، لكن الإشعارات غير مسموح بها حاليًا على هذا الجهاز. تحقق من "
+"إعداداته."
+
+#: static/notifications/push.js:96
+msgid ""
+"Cet appareil garde une ancienne inscription. Désactivez cet abonnement, puis "
+"réactivez les notifications."
+msgstr ""
+"يحتفظ هذا الجهاز باشتراك قديم. عطّل هذا الاشتراك ثم فعّل الإشعارات مجددًا."
+
+#: static/notifications/push.js:99
+msgid ""
+"L'abonnement est enregistré. Vérifiez les réglages de notification de cet "
+"appareil."
+msgstr "تم حفظ الاشتراك. تحقق من إعدادات الإشعارات على هذا الجهاز."
+
+#: static/notifications/push.js:109
+msgid ""
+"Notifications non autorisées. Vous pouvez continuer à consulter les demandes "
+"dans l'application."
+msgstr ""
+"الإشعارات غير مسموح بها. يمكنك متابعة الاطلاع على الطلبات داخل التطبيق."
+
+#: static/notifications/push.js:116
+msgid "Ancienne inscription non renouvelée. Désactivez-la puis réessayez."
+msgstr "لم يُستبدل الاشتراك القديم. عطّله ثم أعد المحاولة."
+
+#: static/notifications/push.js:128
+msgid "Désactiver cet abonnement"
+msgstr "إيقاف هذا الاشتراك"
+
+#: static/notifications/push.js:132
+msgid "Abonnement non confirmé. Rechargez la page."
+msgstr "لم يتم تأكيد الاشتراك. أعد تحميل الصفحة."
+
+#: static/purchasing/editor.js:22
+msgid ""
+"Achat enregistré et historisé. Événement comptable enregistré ; aucun e-mail "
+"externe envoyé dans ce prototype."
+msgstr "تم تسجيل عملية الشراء وإضافتها إلى السجل. تم تسجيل الحدث المحاسبي؛ لم يرسل هذا النموذج الأولي أي بريد إلكتروني خارجي."
+
+#: static/purchasing/editor.js:22
+msgid "Décision enregistrée et historisée. Les stocks n’ont pas été modifiés."
+msgstr "تم حفظ القرار وتسجيله. لم يتغير المخزون."
+
+#: static/purchasing/editor.js:23
+msgid "Consulter les données à jour"
+msgstr "عرض المعلومات الحالية"
+
+#: static/purchasing/editor.js:26
+msgid "Enregistrement refusé. Votre saisie est conservée."
+msgstr "تم رفض الحفظ. تم الاحتفاظ بمدخلاتك."
+
+#: static/purchasing/editor.js:31
+msgid "Référence fournisseur : %(reference)s"
+msgstr "مرجع المورد: %(reference)s"
+
+#: static/purchasing/editor.js:39
+msgid "Ce produit est déjà présent. Modifiez sa quantité dans la déclaration."
+msgstr "هذا المنتج موجود بالفعل. غيّر كميته في البيان."
+
+#: static/purchasing/editor.js:40
+msgid "Une déclaration contient au maximum 100 produits."
+msgstr "يمكن أن يتضمن البيان 100 منتج كحد أقصى."
+
+#: static/purchasing/editor.js:45
+msgid "Stock non inventorié : saisissez la quantité réellement achetée."
+msgstr "المخزون غير محصور: أدخل الكمية التي تم شراؤها فعليًا."
+
+#: static/purchasing/editor.js:45
+msgid ""
+"Prérempli à partir de %(target)s souhaités − %(physical)s en réserve. "
+"Vérifiez et modifiez cette quantité pour qu’elle corresponde à l’achat "
+"réellement passé."
+msgstr "تم ملء الكمية مسبقًا بناءً على الهدف %(target)s مطروحًا منه %(physical)s في المخزون. تحقّق منها وعدّلها لتطابق الشراء الذي تم فعليًا."
+
+#: static/purchasing/editor.js:46
+msgid "Quantité réellement achetée"
+msgstr "الكمية المشتراة فعليًا"
+
+#: static/purchasing/editor.js:48 static/receiving/editor.js:34
+msgid "Retirer ce produit"
+msgstr "إزالة هذا المنتج"
+
+#: static/purchasing/editor.js:49
+msgid ""
+"Quantité conseillée : %(quantity)s %(unit)s. Cette recommandation tient "
+"aussi compte des réservations et des commandes attendues ; elle est "
+"distincte du préremplissage."
+msgstr "الكمية المقترحة: %(quantity)s %(unit)s. يراعي هذا الاقتراح المحجوزات والطلبات المنتظرة، وهو منفصل عن الكمية المعبأة مسبقًا."
+
+#: static/purchasing/editor.js:51
+msgid "%(name)s ajouté à la déclaration non enregistrée."
+msgstr "تمت إضافة %(name)s إلى البلاغ غير المحفوظ."
+
+#: static/purchasing/editor.js:66
+msgid "Sélectionnez au moins un produit et une quantité positive."
+msgstr "اختر منتجًا واحدًا على الأقل وأدخل كمية موجبة."
+
+#: static/purchasing/editor.js:70
+msgid "%(name)s : %(quantity)s %(unit)s réellement achetés."
+msgstr "تم شراء %(quantity)s %(unit)s من %(name)s فعليًا."
+
+#: static/purchasing/editor.js:71
+msgid "Montant déclaré : %(amount)s %(currency)s"
+msgstr "المبلغ المصرّح به: %(amount)s %(currency)s"
+
+#: static/purchasing/editor.js:82
+msgid "Recherche du produit…"
+msgstr "جارٍ البحث عن المنتجات…"
+
+#: static/purchasing/editor.js:87 static/purchasing/editor.js:91
+msgid "Recherche indisponible. La déclaration reste non enregistrée."
+msgstr "البحث غير متاح. لم يُحفظ البيان."
+
+#: static/purchasing/editor.js:89
+msgid ""
+"Choisissez une référence exacte dans les suggestions, puis ajoutez le "
+"produit."
+msgstr "اختر تطابقًا دقيقًا من الاقتراحات ثم أضف المنتج."
+
+#: static/receiving/editor.js:7
+msgid "Examiner les décisions qui bloquent cette correction"
+msgstr "مراجعة القرارات التي تمنع هذا التصحيح"
+
+#: static/receiving/editor.js:9
+msgid ""
+"Un reliquat reste annulé : séparez les unités valablement attendues et "
+"signalez les autres."
+msgstr "ما زالت كمية متبقية ملغاة: افصل الوحدات المنتظر استلامها فعليًا وأبلغ عن الوحدات الأخرى."
+
+#: static/receiving/editor.js:9
+msgid ""
+"%(regular)s entreront en réserve · %(surplus)s en surplus isolé · %"
+"(nonconforming)s non conformes isolés."
+msgstr "ستدخل %(regular)s إلى المخزون · سيُعزل %(surplus)s كفائض · سيُعزل %(nonconforming)s غير مطابق."
+
+#: static/receiving/editor.js:10
+msgid "Opération enregistrée et historisée. Consultez les données actualisées."
+msgstr "تم حفظ العملية وتسجيلها. راجع المعلومات المحدّثة."
+
+#: static/receiving/editor.js:10
+msgid "Consulter le résultat"
+msgstr "عرض النتيجة"
+
+#: static/receiving/editor.js:10
+msgid "Opération refusée. Votre saisie est conservée."
+msgstr "تم رفض العملية. تم الاحتفاظ بمدخلاتك."
+
+#: static/receiving/editor.js:28
+msgid "Lecture indisponible."
+msgstr "تعذر استرداد البيانات."
+
+#: static/receiving/editor.js:31
+msgid "Aperçu refusé."
+msgstr "تم رفض المعاينة."
+
+#: static/receiving/editor.js:31
+msgid "En attente"
+msgstr "قيد الانتظار"
+
+#: static/receiving/editor.js:31
+msgid "Partiellement reçue"
+msgstr "مستلمة جزئيًا"
+
+#: static/receiving/editor.js:31
+msgid "Reçue"
+msgstr "تم الاستلام"
+
+#: static/receiving/editor.js:31
+msgid "Clôturée, reliquat annulé"
+msgstr "أُغلقت وأُلغيت الكمية المتبقية"
+
+#: static/receiving/editor.js:31
+msgid "Annulée sans réception"
+msgstr "أُلغيت دون استلام"
+
+#: static/receiving/editor.js:31
+msgid "État commande : %(before)s → %(after)s"
+msgstr "حالة الطلب: %(before)s → %(after)s"
+
+#: static/receiving/editor.js:31
+msgid ""
+"%(name)s · %(unit)s : quantité régulière %(regular_before)s → %"
+"(regular_after)s, en réserve %(physical_before)s → %(physical_after)s, "
+"réservés %(reserved_before)s → %(reserved_after)s, disponibles %"
+"(available_before)s → %(available_after)s, reçus %(received_before)s → %"
+"(received_after)s, attendus %(waiting_before)s → %(waiting_after)s."
+msgstr "%(name)s · %(unit)s: الكمية المستلمة بانتظام %(regular_before)s → %(regular_after)s، في المخزون %(physical_before)s → %(physical_after)s، محجوز %(reserved_before)s → %(reserved_after)s، متاح %(available_before)s → %(available_after)s، تم استلامه %(received_before)s → %(received_after)s، منتظر %(waiting_before)s → %(waiting_after)s."
+
+#: static/receiving/editor.js:31
+msgid ""
+"Isolation %(kind)s : %(before)s → %(after)s restants ; %(accepted)s déjà "
+"acceptés."
+msgstr "عزل %(kind)s: المتبقي %(before)s → %(after)s؛ تم قبول %(accepted)s بالفعل."
+
+#: static/receiving/editor.js:31
+msgid "surplus"
+msgstr "فائض"
+
+#: static/receiving/editor.js:31
+msgid "non-conformes"
+msgstr "غير مطابق"
+
+#: static/receiving/editor.js:31
+msgid "Aperçu indisponible. Aucun mouvement effectué."
+msgstr "المعاينة غير متاحة. لم تُنفذ أي حركة."
+
+#: static/receiving/editor.js:33
+msgid "Nouvelle arrivée, sans dossier d’isolation antérieur"
+msgstr "شحنة جديدة، دون حالة عزل سابقة"
+
+#: static/receiving/editor.js:33
+msgid "Colis déjà isolé · %(reference)s"
+msgstr "الشحنة المعزولة مسبقًا · %(reference)s"
+
+#: static/receiving/editor.js:33
+msgid "%(waiting)s encore attendus · %(cancelled)s annulés"
+msgstr "ما زال %(waiting)s منتظرًا · أُلغي %(cancelled)s"
+
+#: static/receiving/editor.js:33
+msgid ""
+"Quantités attendues actualisées. Votre saisie provisoire est conservée : "
+"vérifiez-la avant de confirmer."
+msgstr ""
+"تم تحديث الكميات المتوقعة. حُفظت مدخلاتك المؤقتة؛ تحقق منها قبل التأكيد."
+
+#: static/receiving/editor.js:33
+msgid "Actualisation indisponible. Aucun envoi."
+msgstr "التحديث غير متاح. لم يُرسل شيء."
+
+#: static/receiving/editor.js:34
+msgid "Choisissez une référence exacte dans les suggestions."
+msgstr "اختر تطابقًا دقيقًا من الاقتراحات."
+
+#: static/receiving/editor.js:34
+msgid "Ce produit figure déjà dans le constat."
+msgstr "هذا المنتج مدرج بالفعل في البلاغ."
+
+#: static/receiving/editor.js:34
+msgid "Quantité identifiable — facultative"
+msgstr "الكمية التي أمكن تحديدها — اختيارية"
+
+#: static/receiving/editor.js:34
+msgid "Produit ajouté au constat non enregistré."
+msgstr "أُضيف المنتج إلى البلاغ غير المحفوظ."
+
+#: static/receiving/editor.js:34
+msgid "Recherche indisponible."
+msgstr "البحث غير متاح."
+
+#: static/reporting/export.js:11
+msgid "Connexion indisponible. Reconnectez-vous avant de demander le fichier."
+msgstr "الاتصال غير متاح. أعد الاتصال قبل طلب الملف."
+
+#: static/reporting/export.js:13
+msgid "Génération du fichier Excel en cours…"
+msgstr "جارٍ إنشاء ملف Excel…"
+
+#: static/reporting/export.js:19
+msgid ""
+"Le fichier n’a pas pu être généré. Réduisez les filtres ou reconnectez-vous."
+msgstr "تعذر إنشاء الملف. قلّل عوامل التصفية أو أعد الاتصال."
+
+#: static/reporting/export.js:21
+msgid "L’accès a changé. Reconnectez-vous avant de relancer l’export."
+msgstr "تغيرت صلاحية الوصول. سجّل الدخول مجددًا قبل إعادة التصدير."
+
+#: static/reporting/export.js:28
+msgid ""
+"Fichier Excel généré et transmis au navigateur. Vous pouvez le retrouver "
+"dans vos téléchargements."
+msgstr "تم إنشاء ملف Excel وإرساله إلى المتصفح. ستجده في التنزيلات."
+
+#: static/reporting/export.js:30
+msgid ""
+"Réponse réseau interrompue : aucun téléchargement confirmé. Reconnectez-vous "
+"puis relancez l’export ; les quantités ne sont pas modifiées."
+msgstr "انقطع رد الشبكة: لم يتم تأكيد التنزيل. أعد الاتصال ثم ابدأ التصدير من جديد؛ لم تتغير الكميات."
+
+#: static/requests/cancel.js:11
+msgid "Annulation non confirmée."
+msgstr "لم يتم تأكيد الإلغاء."
+
+#: static/requests/cancel.js:11 static/requests/cancel.js:25
+#: static/requests/delivery.js:18 static/requests/delivery.js:58
+#: static/requests/refusal.js:18 static/requests/refusal.js:37
+msgid "Actualiser la demande"
+msgstr "تحديث الطلب"
+
+#: static/requests/cancel.js:23 static/requests/delivery.js:56
+msgid ""
+"Cette demande a changé. Votre saisie est conservée, mais actualisez la "
+"demande avant toute confirmation."
+msgstr "تغير هذا الطلب. تم الاحتفاظ بمدخلاتك؛ حدّث الطلب قبل أي تأكيد."
+
+#: static/requests/cart.js:15
+msgid "Aucun produit sélectionné"
+msgstr "لم يتم اختيار أي منتجات"
+
+#: static/requests/cart.js:26
+msgid "Retirer"
+msgstr "إزالة"
+
+#: static/requests/cart.js:27
+msgid "Retirer — %(name)s"
+msgstr "إزالة — %(name)s"
+
+#: static/requests/cart.js:29
+msgid "Quantité à recontrôler : disponibilité ou droit modifié."
+msgstr "الكمية بحاجة إلى مراجعة: تغير التوفر أو الإذن."
+
+#: static/requests/cart.js:35
+msgid "Une demande peut contenir jusqu'à 100 références."
+msgstr "يمكن أن يتضمن الطلب 100 منتج كحد أقصى."
+
+#: static/requests/cart.js:47
+msgid "Disponible : %(quantity)s %(unit)s"
+msgstr "المتاح: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:48
+msgid "Maximum par demande : %(quantity)s %(unit)s"
+msgstr "الحد الأقصى لكل طلب: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:48
+msgid "Plafond non configuré."
+msgstr "لم يُحدد حد للطلب."
+
+#: static/requests/cart.js:56
+msgid "Quantité demandée — %(name)s"
+msgstr "الكمية المطلوبة — %(name)s"
+
+#: static/requests/cart.js:74
+msgid "Catalogue non disponible"
+msgstr "الفهرس غير متاح"
+
+#: static/requests/cart.js:81
+msgid "Demande %(reference)s envoyée. Quantités réservées."
+msgstr "تم إرسال الطلب %(reference)s. حُجزت الكميات."
+
+#: static/requests/cart.js:82
+msgid "Suivre cette demande"
+msgstr "عرض هذا الطلب"
+
+#: static/requests/cart.js:84
+msgid "Aucune demande envoyée."
+msgstr "لم يُرسل أي طلب."
+
+#: static/requests/cart.js:87
+msgid "%(product)s: %(message)s Maximum possible: %(maximum)s."
+msgstr "%(product)s: %(message)s الحد الأقصى الممكن: %(maximum)s."
+
+#: static/requests/cart.js:87
+msgid "Produit sélectionné"
+msgstr "المنتج المحدد"
+
+#: static/requests/cart.js:94
+msgid ""
+"Disponibilités non actualisées — données potentiellement obsolètes. Vérifiez "
+"la connexion avant une nouvelle demande."
+msgstr ""
+"لم يتم تحديث التوفر؛ قد تكون البيانات قديمة. تحقق من الاتصال قبل إرسال طلب "
+"آخر."
+
+#: static/requests/cart.js:100
+msgid "%(product)s: %(quantity)s %(unit)s"
+msgstr "%(product)s: %(quantity)s %(unit)s"
+
+#: static/requests/cart.js:106
+msgid ""
+"Recherche indisponible. Sélection conservée en mémoire ; données "
+"potentiellement non actualisées."
+msgstr ""
+"البحث غير متاح. لا يزال اختيارك محفوظًا في الذاكرة؛ قد تكون البيانات قديمة."
+
+#: static/requests/delivery.js:18
+msgid "Remise non confirmée."
+msgstr "لم يتم تأكيد التسليم."
+
+#: static/requests/delivery.js:32
+msgid ""
+"%(name)s : %(delivered)s %(unit)s remis ; %(missing)s manquants clôturés ; %"
+"(remaining)s restant réservés."
+msgstr "%(name)s: تم تسليم %(delivered)s %(unit)s؛ أُغلقت كمية النقص %(missing)s؛ ما زال %(remaining)s محجوزًا."
+
+#: static/requests/delivery.js:35
+msgid ""
+"Vérifiez les quantités entières et le choix de traitement du reste. Aucune "
+"remise enregistrée."
+msgstr "تحقق من الكميات الصحيحة ومن كيفية معالجة المتبقي. لم يُسجل أي تسليم."
+
+#: static/requests/delivery.js:40
+msgid ""
+"Le stock en réserve diminuera de %(delivered)s unités remises et de %"
+"(missing)s unités introuvables. Les réservations correspondantes seront "
+"libérées et les reliquats clôturés. La responsable recevra un signalement. "
+"Ne choisissez pas ce traitement pour un simple refus."
+msgstr "سينخفض المخزون بمقدار %(delivered)s وحدة تم تسليمها و%(missing)s وحدة مفقودة فعليًا. ستُحرر الحجوزات المقابلة وتُغلق الكميات المتبقية. ستتلقى المسؤولة بلاغًا. لا تختر هذا الإجراء لمجرد رفض التسليم."
+
+#: static/requests/delivery.js:41
+msgid ""
+"Le stock en réserve diminuera seulement des %(delivered)s unités réellement "
+"remises. Le reste demeure réservé, sans correction pour manque. Aucune "
+"seconde déduction dans Stocks."
+msgstr "سينخفض المخزون بمقدار %(delivered)s وحدة تم تسليمها فعليًا فقط. سيبقى الباقي محجوزًا دون تصحيح للنقص. لن يُخصم مرة ثانية من المخزون."
+
+#: static/requests/delivery_error.js:4
+msgid "Signalement non confirmé."
+msgstr "لم يتم تأكيد البلاغ."
+
+#: static/requests/operation.js:28
+msgid ""
+"La reprise après rechargement est indisponible. Gardez cette page ouverte "
+"jusqu'au résultat."
+msgstr ""
+"لا يمكن استعادة العملية بعد إعادة التحميل في هذا المتصفح. أبقِ الصفحة مفتوحة "
+"حتى ظهور النتيجة."
+
+#: static/requests/operation.js:52
+msgid "Intention encore introuvable. Résolvez cet envoi avant de recommencer."
+msgstr "لم يتم العثور على النية بعد. تحقّق من حالتها قبل إعادة المحاولة."
+
+#: static/requests/operation.js:52
+msgid ""
+"Résultat encore incertain. Résolvez cet envoi ou vérifiez à nouveau ; aucune "
+"nouvelle demande n'a été envoyée automatiquement."
+msgstr "ما زالت النتيجة غير مؤكدة. احسم حالة هذا الإرسال أو تحقّق مجددًا؛ لم يُرسل طلب جديد تلقائيًا."
+
+#: static/requests/operation.js:52
+msgid "Confirmation en cours. Vérifiez à nouveau."
+msgstr "التأكيد جارٍ. تحقق مجددًا."
+
+#: static/requests/operation.js:54
+msgid ""
+"Connexion indisponible. Vérifiez l'enregistrement avant de recommencer ; "
+"aucun envoi automatique."
+msgstr ""
+"الاتصال غير متاح. تحقق مما إذا كانت العملية قد سُجلت قبل المحاولة مجددًا؛ لن "
+"يُعاد الإرسال تلقائيًا."
+
+#: static/requests/operation.js:68
+msgid "Inscription non confirmée. Vérifiez l'enregistrement."
+msgstr "Inscription non confirmée. Vérifiez l'enregistrement."
+
+#: static/requests/operation.js:70
+msgid "Envoi non confirmé. Vérifiez l'enregistrement avant de recommencer."
+msgstr "Envoi non confirmé. Vérifiez l'enregistrement avant de recommencer."
+
+#: static/requests/operation.js:72
+msgid ""
+"Connexion indisponible pendant l'envoi. Vérifiez l'enregistrement ; aucun "
+"envoi automatique."
+msgstr ""
+"انقطع الاتصال أثناء الإرسال. تحقق مما إذا كانت العملية قد سُجلت؛ لن يُعاد "
+"الإرسال تلقائيًا."
+
+#: static/requests/refusal.js:17
+msgid "Refus non confirmé."
+msgstr "لم يتم تأكيد الرفض."
+
+#: static/requests/refusal.js:36
+msgid ""
+"Cette demande a changé. Votre justification est conservée ; actualisez la "
+"demande avant de confirmer."
+msgstr "تغير هذا الطلب. تم الاحتفاظ بسببك؛ حدّث الطلب قبل التأكيد."
+
+#: static/ui/live.js:18 static/ui/live.js:61
+msgid ""
+"Hors connexion — données potentiellement obsolètes. Aucun envoi automatique."
+msgstr "غير متصل — قد تكون البيانات قديمة. لن يُرسل شيء تلقائيًا."
+
+#: static/ui/live.js:27
+msgid ""
+"Actualisation indisponible — données potentiellement obsolètes. Vérifiez "
+"votre connexion ou reconnectez-vous."
+msgstr ""
+"التحديث غير متاح؛ قد تكون البيانات قديمة. تحقق من الاتصال أو سجّل الدخول "
+"مجددًا."
+
+#: static/ui/live.js:34
+msgid "Lecture extérieure interdite"
+msgstr "القراءة من مصدر خارجي غير مسموح بها"
+
+#: static/ui/live.js:36
+msgid "Lecture non autorisée ou indisponible"
+msgstr "القراءة غير مصرح بها أو غير متاحة"
+
+#: static/ui/live.js:78
+msgid "Session à revérifier"
+msgstr "يجب التحقق من الجلسة مجددًا"
+
+#: static/ui/search.js:10
+msgid "Suggestions de recherche"
+msgstr "اقتراحات البحث"
+
+#: static/ui/search.js:20 static/ui/search.js:39
+msgid "Suggestions indisponibles. Vous pouvez lancer la recherche."
+msgstr "الاقتراحات غير متاحة. يمكنك تنفيذ البحث مباشرةً."
+
+#: static/ui/search.js:24
+msgid "Recherche de suggestions…"
+msgstr "جارٍ البحث عن اقتراحات…"
+
+#: static/ui/search.js:27
+msgid "Suggestions indisponibles"
+msgstr "الاقتراحات غير متاحة"
+
+#: static/ui/search.js:29
+msgid "flèches puis Entrée, ou toucher un résultat."
+msgstr "استخدم الأسهم ثم مفتاح الإدخال، أو اختر نتيجة."
+
+#: static/ui/search.js:29
+msgid "Aucune suggestion. Vous pouvez lancer la recherche."
+msgstr "لا توجد اقتراحات. يمكنك تنفيذ البحث مباشرةً."
+
+#: static/ui/search.js:34
+msgid "Sans photo"
+msgstr "بلا صورة"
+
+#: static/ui/shell.js:5
+msgid "Date indisponible"
+msgstr "التاريخ غير متاح"
+
+#: static/ui/shell.js:31
+msgid "Ouvrir la navigation"
+msgstr "فتح التنقل"
+
+#: static/ui/shell.js:40
+msgid "Fermer la navigation"
+msgstr "إغلاق التنقل"
+
+#: static/ui/tables.js:12
+msgid ""
+"Faites défiler le tableau horizontalement pour consulter les autres colonnes."
+msgstr "مرّر الجدول أفقيًا لعرض الأعمدة الأخرى."

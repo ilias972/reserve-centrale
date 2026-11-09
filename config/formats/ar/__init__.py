@@ -1,0 +1,1 @@
+"""Arabic locale format overrides."""

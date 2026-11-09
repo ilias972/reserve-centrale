@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% load i18n %}{% load static %}{% block content %}
+<a class="back-link" href="{% url 'request-detail' request_data.id %}">{% include 'ui/back-arrow.html' %}{% translate "Demande" %} {{ request_data.reference }}</a>
+<h1>{% translate "Ne rien remettre" %}</h1><p>{{ request_data.floor_name }} · {{ request_data.assistant_name }}</p>
+<p id="request-status" class="badge">{{ request_data.status_label }}</p>
+<div hidden>{% csrf_token %}</div>{% include 'assistant/recovery.html' %}
+{% if request_data.can_refuse %}
+<form id="refuse-request" class="card">
+<h2>{% translate "Refuser définitivement cette demande" %}</h2>
+<p>{% translate "Aucun produit ne sera enregistré comme remis ou manquant. Toutes les quantités réservées ci-dessous seront libérées. Le stock en réserve restera inchangé. Le demandeur verra le refus et votre justification éventuelle." %}</p>
+<ul>{% for line in request_data.lines %}<li>{{ line.name }} : {{ line.reserved }} {{ line.unit }} {% translate "à libérer" %}</li>{% endfor %}</ul>
+<label for="refusal-message">{% translate "Justification facultative" %}</label>
+<textarea id="refusal-message" name="message" maxlength="2000" rows="3"></textarea>
+<div class="form-actions"><button id="refuse-confirm" type="submit">{% translate "Confirmer le refus" %}</button><a href="{% url 'request-detail' request_data.id %}">{% translate "Conserver la demande" %}</a></div>
+</form>
+{% else %}<p>{% translate "Cette demande ne peut pas être refusée : elle doit être prise en charge par vous et ne comporter aucune remise confirmée. Après une remise partielle, contactez la responsable pour la clôture du reliquat." %}</p>{% endif %}
+{{ refusal_config|json_script:'refusal-data' }}<script src="{% static 'requests/operation.js' %}" defer></script><script src="{% static 'requests/refusal.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}{% load i18n %}{% load static presentation %}
+{% block title %}{% translate "Notifications · Gestion des stocks" %}{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">{% translate "Votre compte" %}</p><h1>{% translate "Notifications" %}</h1><p>{% translate "Lire une notification ne résout pas le signalement associé." %}</p></div></div>
+{% if not initialized %}<p class="notice" role="status">{% translate "La boîte de notifications n'est pas encore activée. Les demandes et dossiers restent consultables dans leurs rubriques." %}</p>{% endif %}
+<nav class="tabs" aria-label="{% translate "Filtrer les notifications" %}"><a href="{% url 'notifications' %}" {% if vue == 'toutes' %}aria-current="page"{% endif %}>{% translate "Toutes" %}</a><a href="{% url 'notifications' %}?vue=non-lues" {% if vue == 'non-lues' %}aria-current="page"{% endif %}>{% translate "Non lues" %}</a></nav>
+<div class="notification-list" id="notification-list" data-revision="{{ list_revision }}">
+{% if unread_notification_count %}<form method="post" action="{% url 'notifications-read-all' %}">{% csrf_token %}<input type="hidden" name="cutoff" value="{{ cutoff }}"><button type="submit" class="secondary">{% translate "Tout marquer comme lu" %}</button></form>{% endif %}
+
+{% for row in rows %}{% with item=row.notification %}<article class="panel notification-card {% if not item.read_at %}notification-unread{% endif %}"><div class="notification-heading"><h2>{{ row.title }}</h2>{% if not item.read_at %}<span class="badge">{% translate "Non lue" %}</span>{% endif %}</div><p>{{ row.message }}</p><p class="muted"><time datetime="{{ item.event.operation.confirmed_at|date:'c' }}">{{ item.event.operation.confirmed_at|ui_datetime }}</time></p><div class="actions">{% if row.url %}<a class="button secondary" href="{% url 'notification-open' item.pk %}">{{ row.label }}</a>{% else %}<p>{{ row.label }}</p>{% endif %}{% if not item.read_at %}<form method="post" action="{% url 'notification-read' item.pk %}">{% csrf_token %}<button type="submit" class="secondary">{% translate "Marquer comme lu" %}<span class="sr-only"> : {{ row.title }}</span></button></form>{% endif %}</div></article>{% endwith %}{% empty %}<div class="empty-state" role="status"><h2>{% if vue == 'non-lues' %}{% translate "Aucune notification non lue" %}{% else %}{% translate "Aucune notification pour le moment" %}{% endif %}</h2><p>{% translate "Vous pouvez toujours consulter les demandes et les dossiers dans leurs rubriques habituelles." %}</p></div>{% endfor %}
+</div>
+{% if page.has_other_pages %}<nav class="pagination" aria-label="{% translate "Pages des notifications" %}">{% if page.has_previous %}<a href="?vue={{ vue }}&amp;page={{ page.previous_page_number }}">{% translate "Page précédente" %}</a>{% endif %}<span>{% translate "Page" %} {{ page.number }} {% translate "sur" %} {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a href="?vue={{ vue }}&amp;page={{ page.next_page_number }}">{% translate "Page suivante" %}</a>{% endif %}</nav>{% endif %}
+{% if user.role == 'REPLENISHER' %}
+<section class="panel" id="push-settings" data-push-settings>
+  <h2>{% translate "Notifications sur cet appareil" %}</h2>
+  <p>{% translate "Leur activation est facultative. Les demandes restent disponibles dans l'application." %}</p>
+  {% if push_configured %}
+    {% if push_subscriptions %}
+      <p id="push-status" class="stock-success" role="status" aria-live="polite" aria-atomic="true" data-subscribed="true"><strong>{% translate "Notifications activées sur cet appareil" %}</strong><br>{% translate "Votre inscription est enregistrée. La réception dépend aussi des réglages iOS et de la connexion." %}</p>
+    {% else %}
+      <p id="push-status" class="notice" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+    {% endif %}
+    <div class="actions" id="push-controls">
+      {% if not push_subscriptions %}<button type="button" id="enable-push">{% translate "Activer les notifications" %}</button>{% endif %}
+      {% for sub in push_subscriptions %}<button type="button" class="secondary revoke-push" data-subscription="{{ sub.pk }}">{% translate "Désactiver cet abonnement" %}</button>{% endfor %}
+    </div>
+    <script src="{% static 'notifications/push.js' %}?v=a10-vapid-key-check-20261103" defer></script>
+  {% else %}
+    <p>{% translate "Le Web Push est désactivé dans ce prototype. Aucun message n'est envoyé à votre appareil." %}</p>
+  {% endif %}
+  <p>{% translate "Sur iPhone compatible, utilisez l'application ajoutée à l'écran d'accueil. Chrome seul n'offre pas nécessairement ce fonctionnement." %}</p>
+</section>
+{% endif %}
+{% if user.role == 'ADMIN' %}<p><a href="{% url 'notification-diagnostics' %}">{% translate "Diagnostic des notifications" %}</a></p>{% endif %}
+{% endblock %}

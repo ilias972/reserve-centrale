@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% load i18n %}{% load presentation static %}{% block content %}
+<a class="back-link" href="{% url 'case-detail' case.id %}{{ case_context_query }}">{% include 'ui/back-arrow.html' %}{% translate "Retour au signalement" %}</a>
+<h1>{% translate "Confirmer la vérification du manque" %}</h1>
+<p>{% translate "Recomptez les produits de la remise. Cette décision clôture uniquement le dossier de manque : elle ne modifie ni les stocks, ni la demande, ni ses réservations." %}</p>
+{% if blocked %}<section class="card"><p class="notice">{% translate "Un conflit de stock reste à régulariser. La vérification du manque n’est pas disponible." %}</p>{% for row in rows %}{% if row.hold %}<a href="{% url 'case-detail' row.hold.case.case.pk %}?from=stock">{% translate "Examiner le conflit de stock —" %} {{ row.name }}</a>{% endif %}{% endfor %}</section>
+{% else %}
+<form id="case-form">{% csrf_token %}
+<section class="card"><h2>{% translate "Comptages vérifiés de cette remise" %}</h2>
+<p>{% translate "Si un comptage diffère du stock enregistré, faites d’abord enregistrer le véritable écart dans Stocks. Ne recopiez pas une quantité sans avoir recompté." %}</p>
+{% for row in rows %}<label>{{ row.name }} — {{ row.unit }}<span class="helptext">{% translate "En réserve :" %} {{ row.physical }} {% translate "; réservés :" %} {{ row.reserved }} {% translate "; disponibles :" %} {{ row.available }}.</span><input data-count-product="{{ row.id }}" type="number" min="0" max="1000000000" step="1" required inputmode="numeric"></label>{% endfor %}</section>
+<label>{% translate "Résultat de votre vérification" %}<textarea id="case-message" required maxlength="2000"></textarea></label>
+<label><input id="case-verification" type="checkbox" required> {% translate "J’ai recompté les produits et vérifié qu’aucun écart de stock ne reste à traiter." %}</label>
+<button id="case-submit" type="submit">{% translate "Vérifier avant de confirmer" %}</button>
+<section id="case-preview" class="card" hidden aria-live="polite"><h2>{% translate "Conséquences avant confirmation" %}</h2><div id="case-preview-content"></div><button id="case-confirm" type="button">{% translate "Confirmer la vérification du manque" %}</button></section>
+</form>
+{% include 'assistant/recovery.html' %}{{ config|json_script:'case-config' }}<script src="{% static 'requests/operation.js' %}" defer></script><script src="{% static 'cases/editor.js' %}?v=signalements-20261029" defer></script>
+{% endif %}{% endblock %}

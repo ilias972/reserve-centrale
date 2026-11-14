@@ -1,52 +1,68 @@
 # Réserve centrale
 
-A self-hosted Django and PostgreSQL application for managing one organisation’s internal catalogue, stock, reservations, requests, issues, supplier purchasing, receipts, case follow-up, notifications, reporting, and XLSX exports.
+**Open-source inventory and internal supply management for organisations.**
 
-The project is designed for a dedicated installation per organisation. It is not a hosted service and does not provide multi-tenant isolation.
+Réserve centrale is a self-hosted application for teams that manage shared stock and internal supply requests. It records stock, reservations, distributions, supplier orders and receipts in one traceable workspace.
 
-## Features
+[View the v0.1.0 experimental release](https://github.com/ilias972/reserve-centrale/releases/tag/v0.1.0)
 
-- Item catalogue, categories, counting units, suppliers, and department-level access rules.
-- Physical stock, reservations, availability, and an append-only movement ledger.
-- Internal requests, preparation, partial issues, and traceable corrections.
-- Purchase recommendations and tracking of orders actually placed with suppliers.
-- Receipts, quarantined goods, supplier exceptions, and review cases.
-- In-app notifications, personal and administrative histories, reporting, and XLSX exports.
-- Local consistency checks and backup/restore tools.
+## Screenshots
 
-Core quantities are kept distinct:
+### Dashboard — English
 
-- `0 ≤ reserved ≤ physical`, with `available = physical − reserved`.
-- A request’s quantity is split into issued, cancelled, and still-open amounts.
-- A supplier order’s quantity is split into regularly received, cancelled, and still-expected amounts.
+![English dashboard showing operational counters, stock shortages, purchase needs and expected orders.](docs/screenshots/dashboard-en.png)
 
-A delivery to a department is not measured patient or service consumption.
+### Inventory — English
 
-## Languages
+![English stock page showing search, filters, available quantities and three fictional items.](docs/screenshots/inventory-en.png)
 
-The interface supports English (default), French, and Modern Standard Arabic with right-to-left layout. Users choose a language in the interface. User-entered item, supplier, and department names remain as stored.
+### Internal requests — French
 
-## Requirements
+![French personal requests page with a fictional partially delivered request.](docs/screenshots/requests-fr.png)
 
-- Python 3.13.
-- PostgreSQL supported by the project migrations.
-- Separate PostgreSQL owner, runtime, and test roles.
+### Dashboard — Arabic, right to left
 
-See [Installation](docs/INSTALLATION.md) for a clean local setup. See [Fictitious demo](docs/DEMO.md) for an optional generated dataset that contains no organisation data.
+![Arabic dashboard rendered right to left, with operational counters and a fictional expected order.](docs/screenshots/arabic-rtl.png)
 
-## Run locally
+All screenshots were captured from the application using its optional fictitious demo data. They contain no organisation data.
 
-After completing the installation guide and applying migrations:
+## Key features
 
-```sh
-DJANGO_DEBUG=1 make run
-```
+- Inventory tracking and stock movement history.
+- Reservations and available-stock calculations.
+- Internal supply requests, preparation and full or partial distribution.
+- Supplier orders entered by a manager and receipt tracking.
+- User roles, department access and quantity limits.
+- Audit history, operational dashboards, statistics and XLSX exports.
+- English, French and Modern Standard Arabic interface, including RTL layout.
 
-Open `http://127.0.0.1:8000/connexion` on the same computer. Django’s development server is for local development only; this command does not provide HTTPS or remote-device access.
+## How it works
+
+1. A manager configures items, departments and access limits.
+2. A requester submits an internal request.
+3. The application reserves available quantities as part of the request transaction.
+4. An operator prepares the request and records the quantities distributed.
+5. Stock balances and the related history reflect the confirmed operation.
+
+This is an overview of the common path; the application also supports partial issues, corrections, receipts and exception handling. A distribution to a department is not a measurement of what that department consumed.
+
+## Try it locally
+
+The project is intended to be installed as a dedicated instance for one organisation. A local demo requires **Python 3.13**, **PostgreSQL**, **GNU gettext** and separate PostgreSQL owner, runtime and test roles. The setup is not a one-command demo: follow the verified steps in [Local installation](docs/INSTALLATION.md), then optionally create fictitious data with [Fictitious demo](docs/DEMO.md).
+
+The demo generator prints random passwords once for its fictional accounts. There are no shared or preconfigured demo passwords.
+
+## Supported languages
+
+- English (default for a new installation)
+- Français
+- العربية — Modern Standard Arabic with right-to-left layout
+
+Users can choose their interface language. Names entered by an organisation, such as item and supplier names, remain as stored. See the [translation workflow](docs/TRANSLATIONS.md).
 
 ## Tests and quality checks
 
-Tests require a local PostgreSQL instance and a dedicated test role that can create its own temporary `test_stock_app_*` databases. They do not use a demo or production database.
+Tests require a local PostgreSQL instance and a dedicated test role that can create temporary `test_stock_app_*` databases. They never use the demo or a production database. See [Local installation](docs/INSTALLATION.md) for the role setup.
 
 ```sh
 DATABASE_NAME=postgres TEST_DATABASE_NAME=test_stock_app_local \
@@ -54,24 +70,29 @@ DATABASE_NAME=postgres TEST_DATABASE_NAME=test_stock_app_local \
 make quality
 ```
 
-External email and Web Push transports are disabled in tests. Email is captured locally and push transport is simulated.
+Tests keep email local and simulate push delivery; external email and Web Push transports are disabled.
 
 ## Architecture
 
-The application is a server-rendered Django monolith. PostgreSQL is the transactional source of truth; JavaScript enhances selected forms and navigation. See [Architecture](docs/ARCHITECTURE.md).
+Réserve centrale is a server-rendered Django monolith backed by PostgreSQL. JavaScript enhances selected forms and navigation. PostgreSQL transactions protect stock-changing workflows; the database remains the source of truth. See [Architecture](docs/ARCHITECTURE.md) for the module boundaries and invariants.
 
-The supported-language catalogs and RTL review process are documented in [Translation workflow](docs/TRANSLATIONS.md).
+## Contributing
 
-## Scope and limitations
+Bug reports, documentation improvements, focused fixes and translation contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request. Please use only fictitious data in reports and screenshots.
 
-One database and installation serve one organisation. Roles are fixed in this version. The software has not been validated for every organisation or regulated workflow. It does not claim regulatory certification for medicines, medical devices, expiry tracking, recalls, or cold-chain management. Production security, TLS, backups, monitoring, retention, and support require environment-specific work. Web Push is disabled by default, and physical iPhone delivery is not generally validated.
+## Limitations
+
+- One organisation per installation; this is not a multi-tenant SaaS.
+- The application has not been validated for every organisation or regulated workflow and does not claim medical-regulatory certification.
+- A real deployment needs environment-specific security, TLS, backups, monitoring, retention and update procedures. The local Django development server is not a production server.
+- Email and Web Push transports are disabled by default. Physical iPhone Web Push delivery has not been generally validated.
+- Human review of the Arabic terminology is recommended.
+- No production availability or support guarantee is provided.
 
 See [Limitations](docs/LIMITATIONS.md) before evaluating the software for operational use.
 
-## License
+## License, third-party notices and security
 
-The project code identified as licensable by the named maintainer is offered under the MIT License; see [`LICENSE`](LICENSE). Third-party components keep their own licences and notices in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The MIT notice does not replace those obligations or independently establish rights in third-party or externally sourced materials.
+The project code identified in [`LICENSE`](LICENSE) is offered under the MIT License. Third-party components retain their own licences and required notices; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The project licence does not replace third-party terms.
 
-## Contributing and security
-
-Contribution instructions are in [`CONTRIBUTING.md`](CONTRIBUTING.md). Issues and pull requests are enabled. Use GitHub private vulnerability reporting for sensitive security reports; see [`SECURITY.md`](SECURITY.md).
+For sensitive vulnerability reports, use the repository's [private vulnerability reporting](https://github.com/ilias972/reserve-centrale/security/advisories/new). See [`SECURITY.md`](SECURITY.md).

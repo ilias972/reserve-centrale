@@ -225,11 +225,22 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             browser = pw.chromium.launch(headless=True)
             page = self.page(browser, 1280, 800)
             static_responses = []
+            navigation_requests = []
             page.on(
                 "response",
                 lambda response: (
                     static_responses.append((urlsplit(response.url).path, response.status))
                     if "/static/" in response.url
+                    else None
+                ),
+            )
+            page.on(
+                "request",
+                lambda request: (
+                    navigation_requests.append(
+                        {"method": request.method, "path": urlsplit(request.url).path}
+                    )
+                    if request.is_navigation_request()
                     else None
                 ),
             )
@@ -263,6 +274,9 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 field.fill(value)
                 self.assertEqual(field.input_value(), value)
             page.locator("#purchase-verification").check()
+            before_submit = page.locator("[data-order-line]").evaluate_all(
+                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+            )
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
             self.assertTrue(
                 page.locator("#purchase-review").is_visible(),
@@ -272,6 +286,9 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                     search_present: Boolean(location.search),
                     static_responses: extra.static_responses,
                     page_error_kinds: extra.page_error_kinds,
+                    before_submit: extra.before_submit,
+                    navigation_requests: extra.navigation_requests,
+                    result: document.querySelector('#operation-result')?.textContent?.slice(0, 160) ?? null,
                     valid: document.querySelector('#purchase-form').checkValidity(),
                     reviewHidden: document.querySelector('#purchase-review').hidden,
                     confirmExists: Boolean(document.querySelector('#purchase-confirm')),
@@ -281,6 +298,8 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                     {
                         "static_responses": static_responses,
                         "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
+                        "before_submit": before_submit,
+                        "navigation_requests": navigation_requests,
                     },
                 ),
             )

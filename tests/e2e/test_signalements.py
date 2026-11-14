@@ -226,6 +226,7 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             page = self.page(browser, self.admin, 390, 844)
             static_responses = []
             static_failures = []
+            navigation_requests = []
             page.on(
                 "response",
                 lambda r: (
@@ -242,13 +243,27 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
                     else None
                 ),
             )
+            page.on(
+                "request",
+                lambda r: (
+                    navigation_requests.append({"method": r.method, "path": urlsplit(r.url).path})
+                    if r.is_navigation_request()
+                    else None
+                ),
+            )
             page.goto(self.live_server_url + f"/dossiers/{case.pk}")
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()
-            for n in page.locator("[data-count-product]").all():
+            count_fields = page.locator("[data-count-product]").all()
+            self.assertTrue(count_fields, {"path": urlsplit(page.url).path})
+            for n in count_fields:
                 expect(n).to_have_value("")
-            for n in page.locator("[data-count-product]").all():
+            for n in count_fields:
                 n.fill("0")
+                expect(n).to_have_value("0")
             self.verification(page)
+            counted_values_before_submit = page.locator("[data-count-product]").evaluate_all(
+                "nodes => nodes.map(node => node.value)"
+            )
             self.assertTrue(
                 page.evaluate("typeof window.ReserveRequestOperation === 'function'"),
                 {"url": page.url, "static": static_responses, "failed_static": static_failures},
@@ -273,6 +288,8 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
                         "static": static_responses,
                         "failed_static": static_failures,
                         "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
+                        "counted_values_before_submit": counted_values_before_submit,
+                        "navigation_requests": navigation_requests,
                     },
                 ),
             )

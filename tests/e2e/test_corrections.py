@@ -71,7 +71,10 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
                 ancestors.push({tag: node.tagName, id: node.id, className: node.className,
                   hidden: node.hidden, display: style.display, visibility: style.visibility});
               }
-              return {path: location.pathname, detailsOpen: details?.open ?? null,
+              return {path: location.pathname,
+                heading: document.querySelector('main h1')?.textContent ?? null,
+                detailsCount: document.querySelectorAll('.case-review').length,
+                detailsOpen: details?.open ?? null,
                 summary: details?.querySelector('summary')?.textContent ?? null, ancestors};
             }"""),
         )
@@ -110,6 +113,7 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
             admin.get_by_role("link", name="Signalements", exact=True).click()
             admin.get_by_role("link", name="Remises aux unités", exact=True).click()
             admin.get_by_role("link", name="Examiner le signalement", exact=True).click()
+            admin.wait_for_load_state("networkidle")
             self.fill_verification(admin)
             admin.get_by_role("button", name="Commencer la vérification", exact=True).click()
             self.follow_success(admin)

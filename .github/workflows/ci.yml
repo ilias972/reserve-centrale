@@ -17,26 +17,10 @@ jobs:
     name: Quality
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
-          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
       PGHOST: 127.0.0.1
       PGPORT: "5432"
       PGUSER: postgres
-      PGPASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
       PGDATABASE: postgres
       NOTIFICATION_EXTERNAL_ALLOWED: "0"
       NOTIFICATION_PUSH_ENABLED: "0"
@@ -62,7 +46,36 @@ jobs:
       - name: Install locked dependencies
         run: python -m pip install --require-hashes -r requirements-dev.txt
 
-      - name: Prepare isolated PostgreSQL roles and database
+      - name: Generate run-scoped CI credentials
+        run: python .github/scripts/prepare_ci_database.py --write-environment
+
+      - name: Start disposable PostgreSQL 17 service
+        run: |
+          docker run --detach \
+            --name reserve-ci-postgres \
+            --publish 5432:5432 \
+            --env "POSTGRES_PASSWORD=$PGPASSWORD" \
+            --env POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 \
+            --health-cmd "pg_isready -U postgres -d postgres" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            postgres:17
+          for attempt in $(seq 1 30); do
+            health=$(docker inspect --format='{{.State.Health.Status}}' reserve-ci-postgres)
+            if [ "$health" = healthy ]; then
+              exit 0
+            fi
+            if [ "$health" = unhealthy ]; then
+              echo "PostgreSQL service did not become healthy." >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Timed out waiting for the PostgreSQL service." >&2
+          exit 1
+
+      - name: Create least-privilege PostgreSQL roles and database
         run: python .github/scripts/prepare_ci_database.py
 
       - name: Compile translation catalogs
@@ -80,30 +93,18 @@ jobs:
           python -m ruff check .github/scripts
           python -m ruff format --check .github/scripts
 
+      - name: Stop disposable PostgreSQL service
+        if: always()
+        run: docker rm --force reserve-ci-postgres >/dev/null 2>&1 || true
+
   tests:
     name: Tests (PostgreSQL + Chromium)
     runs-on: ubuntu-24.04
     timeout-minutes: 50
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
-          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
       PGHOST: 127.0.0.1
       PGPORT: "5432"
       PGUSER: postgres
-      PGPASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
       PGDATABASE: postgres
       NOTIFICATION_EXTERNAL_ALLOWED: "0"
       NOTIFICATION_PUSH_ENABLED: "0"
@@ -129,7 +130,36 @@ jobs:
       - name: Install locked dependencies
         run: python -m pip install --require-hashes -r requirements-dev.txt
 
-      - name: Prepare isolated PostgreSQL roles and database
+      - name: Generate run-scoped CI credentials
+        run: python .github/scripts/prepare_ci_database.py --write-environment
+
+      - name: Start disposable PostgreSQL 17 service
+        run: |
+          docker run --detach \
+            --name reserve-ci-postgres \
+            --publish 5432:5432 \
+            --env "POSTGRES_PASSWORD=$PGPASSWORD" \
+            --env POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 \
+            --health-cmd "pg_isready -U postgres -d postgres" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            postgres:17
+          for attempt in $(seq 1 30); do
+            health=$(docker inspect --format='{{.State.Health.Status}}' reserve-ci-postgres)
+            if [ "$health" = healthy ]; then
+              exit 0
+            fi
+            if [ "$health" = unhealthy ]; then
+              echo "PostgreSQL service did not become healthy." >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Timed out waiting for the PostgreSQL service." >&2
+          exit 1
+
+      - name: Create least-privilege PostgreSQL roles and database
         run: python .github/scripts/prepare_ci_database.py
 
       - name: Compile translation catalogs
@@ -166,3 +196,7 @@ jobs:
           path: ${{ runner.temp }}/reserve-tests/summary.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: Stop disposable PostgreSQL service
+        if: always()
+        run: docker rm --force reserve-ci-postgres >/dev/null 2>&1 || true

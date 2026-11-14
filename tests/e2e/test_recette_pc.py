@@ -1261,10 +1261,22 @@ class RecettePCTests(DeliveryFixtures, StaticLiveServerTestCase):
                     for summary in page.locator("summary:visible").all():
                         summary.click()
                     walk.inspect(page, user.role, f"panels-{width}")
+                    layout = page.evaluate("""() => ({
+                        scroll: document.documentElement.scrollWidth,
+                        bodyScroll: document.body.scrollWidth,
+                        offenders: [...document.querySelectorAll('body *')]
+                          .filter(n => n.getClientRects().length)
+                          .map(n => {
+                            const r = n.getBoundingClientRect();
+                            return {tag:n.tagName,id:n.id,className:typeof n.className==='string'?n.className:'',left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width),client:n.clientWidth,scroll:n.scrollWidth};
+                          })
+                          .filter(n => n.right > innerWidth + 1 || (n.left < -1 && n.right > 0) || n.scroll > n.client + 1)
+                          .slice(0, 20)
+                    })""")
                     self.assertLessEqual(
-                        page.evaluate("document.documentElement.scrollWidth"),
+                        layout["scroll"],
                         width,
-                        f"role={user.role} path={path} viewport={width}x{height} url={page.url}",
+                        f"role={user.role} path={path} viewport={width}x{height} url={page.url} layout={layout}",
                     )
                     page.context.close()
             browser.close()

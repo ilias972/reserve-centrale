@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
@@ -223,6 +224,20 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
             page = self.page(browser, self.admin, 390, 844)
+            static_responses = []
+            static_failures = []
+            page.on(
+                "response",
+                lambda r: static_responses.append((urlsplit(r.url).path, r.status))
+                if urlsplit(r.url).path.startswith("/static/")
+                else None,
+            )
+            page.on(
+                "requestfailed",
+                lambda r: static_failures.append(urlsplit(r.url).path)
+                if urlsplit(r.url).path.startswith("/static/")
+                else None,
+            )
             page.goto(self.live_server_url + f"/dossiers/{case.pk}")
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()
             for n in page.locator("[data-count-product]").all():
@@ -230,8 +245,25 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             for n in page.locator("[data-count-product]").all():
                 n.fill("0")
             self.verification(page)
+            self.assertTrue(
+                page.evaluate("typeof window.ReserveRequestOperation === 'function'"),
+                {"url": page.url, "static": static_responses, "failed_static": static_failures},
+            )
             page.get_by_role("button", name="Vérifier avant de confirmer", exact=True).click()
-            expect(page.locator("#operation-result")).to_contain_text("Le comptage diffère")
+            page.wait_for_timeout(5000)
+            result = page.locator("#operation-result").inner_text()
+            self.assertIn(
+                "Le comptage diffère",
+                result,
+                page.evaluate("""() => ({
+                    url: location.pathname,
+                    formValid: document.querySelector('#case-form').checkValidity(),
+                    disabled: [...document.querySelectorAll('#case-form input, #case-form textarea, #case-form button')]
+                      .map(n => ({id:n.id,disabled:n.disabled,value:n.type === 'checkbox' ? n.checked : n.value})),
+                    result: document.querySelector('#operation-result').innerText,
+                    previewHidden: document.querySelector('#case-preview').hidden
+                })"""),
+            )
             expect(page.locator("#case-confirm")).to_be_hidden()
             for product in products:
                 page.locator(f'[data-count-product="{product.pk}"]').fill(

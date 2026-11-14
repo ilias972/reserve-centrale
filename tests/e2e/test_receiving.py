@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
@@ -23,6 +24,8 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
         ROOT.mkdir(parents=True, exist_ok=True)
         self.errors = []
         self.failures = []
+        self.static_responses = []
+        self.static_failures = []
 
     def page(self, browser, user, width=390, height=844):
         page = browser.new_page(
@@ -81,8 +84,21 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
             page.get_by_role("link", name="Réceptions", exact=True).click()
             page.get_by_role("link", name="Consulter la commande", exact=True).click()
             self.inspect(page, "commande-mobile")
+            page.on(
+                "response",
+                lambda r: self.static_responses.append((urlsplit(r.url).path, r.status))
+                if urlsplit(r.url).path.startswith("/static/")
+                else None,
+            )
+            page.on(
+                "requestfailed",
+                lambda r: self.static_failures.append(urlsplit(r.url).path)
+                if urlsplit(r.url).path.startswith("/static/")
+                else None,
+            )
             page.get_by_role("link", name="Recevoir cette arrivée", exact=True).click()
             self.assertIn("/recevoir", page.url, page.url)
+            page.wait_for_load_state("networkidle")
             script_src = page.locator('script[src*="receiving/editor.js"]').get_attribute("src")
             self.assertTrue(
                 script_src.startswith("/static/"),
@@ -90,14 +106,15 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
             )
             self.assertTrue(
                 page.evaluate("typeof window.ReserveRequestOperation === 'function'"),
-                {"url": page.url, "title": page.title()},
+                {"url": page.url, "title": page.title(), "static": self.static_responses, "failed_static": self.static_failures, "page_errors": self.errors},
             )
             values = page.locator('[data-quantity="conforming"]')
             page_details = page.evaluate("""() => ({
                 title: document.title,
                 main: document.querySelector('main')?.innerText.slice(0, 500),
                 rows: document.querySelectorAll('.arrival-row').length,
-                hasConfig: Boolean(document.getElementById('arrival-config'))
+                hasConfig: Boolean(document.getElementById('arrival-config')),
+                staticResources: performance.getEntriesByType("resource").map(r => r.name).filter(n => n.includes("/static/"))
             })""")
             self.assertEqual(values.count(), 2, {"url": page.url, **page_details})
             self.assertEqual(values.evaluate_all("nodes=>nodes.map(n=>n.value)"), ["0", "0"])

@@ -56,10 +56,12 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
         if review.count() and not review.evaluate("node=>node.open"):
             review.locator("summary").click()
         if review.count():
-            expect(review.locator("#case-message")).to_be_visible()
-        page.locator("#case-message").fill(
-            "Quantités fictives recomptées et conséquences vérifiées."
-        )
+            expect(review).to_have_attribute("open", "")
+            message = review.locator("#case-message")
+        else:
+            message = page.locator("#case-message")
+        expect(message).to_be_visible()
+        message.fill("Quantités fictives recomptées et conséquences vérifiées.")
         page.locator("#case-verification").check()
 
     def follow_success(self, page):

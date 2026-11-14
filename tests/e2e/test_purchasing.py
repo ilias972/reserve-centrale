@@ -252,9 +252,18 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 field.fill(field.get_attribute("max"))
             page.locator("#purchase-verification").check()
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
-            page.get_by_role(
-                "button", name="Confirmer l’annulation du reliquat", exact=True
-            ).click()
+            self.assertTrue(
+                page.locator("#purchase-review").is_visible(),
+                page.evaluate("""() => ({
+                    url: location.pathname,
+                    valid: document.querySelector('#purchase-form').checkValidity(),
+                    reviewHidden: document.querySelector('#purchase-review').hidden,
+                    confirmExists: Boolean(document.querySelector('#purchase-confirm')),
+                    lines: [...document.querySelectorAll('[data-order-line]')]
+                      .map(node => ({id: node.dataset.orderLine, value: node.value, max: node.max}))
+                })"""),
+            )
+            page.locator("#purchase-confirm").click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("Annulée sans réception")
             expect(

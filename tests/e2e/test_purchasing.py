@@ -229,6 +229,18 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             page.locator(f'[data-order-line="{line.pk}"]').fill("2")
             page.locator("#purchase-verification").check()
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
+            self.assertTrue(
+                page.locator("#purchase-review").is_visible(),
+                page.evaluate("""() => ({
+                    url: location.pathname,
+                    valid: document.querySelector('#purchase-form').checkValidity(),
+                    invalid: [...document.querySelector('#purchase-form').elements]
+                      .filter(node => !node.checkValidity())
+                      .map(node => ({id: node.id, name: node.name})),
+                    lines: [...document.querySelectorAll('[data-order-line]')]
+                      .map(node => ({id: node.dataset.orderLine, value: node.value, max: node.max}))
+                })"""),
+            )
             self.inspect(page, "annulation-reliquat-preview")
             page.get_by_role(
                 "button", name="Confirmer l’annulation du reliquat", exact=True

@@ -52,8 +52,11 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
         page.screenshot(path=str(ROOT / (name + ".png")), full_page=True)
 
     def fill_verification(self, page):
-        if page.locator(".case-review").count():
-            page.locator(".case-review").evaluate("node=>node.open=true")
+        review = page.locator(".case-review")
+        if review.count() and not review.evaluate("node=>node.open"):
+            review.locator("summary").click()
+        if review.count():
+            expect(review.locator("#case-message")).to_be_visible()
         page.locator("#case-message").fill(
             "Quantités fictives recomptées et conséquences vérifiées."
         )

@@ -1262,7 +1262,9 @@ class RecettePCTests(DeliveryFixtures, StaticLiveServerTestCase):
                         summary.click()
                     walk.inspect(page, user.role, f"panels-{width}")
                     self.assertLessEqual(
-                        page.evaluate("document.documentElement.scrollWidth"), width
+                        page.evaluate("document.documentElement.scrollWidth"),
+                        width,
+                        f"role={user.role} path={path} viewport={width}x{height} url={page.url}",
                     )
                     page.context.close()
             browser.close()

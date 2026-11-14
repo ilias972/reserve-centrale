@@ -11,7 +11,6 @@ from pathlib import Path
 import psycopg
 from psycopg import sql
 
-
 APP_DATABASE = "ci_stock_app"
 OWNER_ROLE = "stock_app_owner"
 RUNTIME_ROLE = "stock_app_runtime"
@@ -143,9 +142,7 @@ def create_database() -> None:
                 )
             )
             cursor.execute(
-                sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(
-                    sql.Identifier(RUNTIME_ROLE)
-                )
+                sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(sql.Identifier(RUNTIME_ROLE))
             )
 
 

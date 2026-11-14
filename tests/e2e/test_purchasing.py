@@ -273,7 +273,13 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 value = field.get_attribute("max")
                 field.fill(value)
                 self.assertEqual(field.input_value(), value)
+            values_after_fill = page.locator("[data-order-line]").evaluate_all(
+                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+            )
             page.locator("#purchase-verification").check()
+            values_after_check = page.locator("[data-order-line]").evaluate_all(
+                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+            )
             before_submit = page.locator("[data-order-line]").evaluate_all(
                 "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
             )
@@ -299,6 +305,8 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                         "static_responses": static_responses,
                         "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
                         "before_submit": before_submit,
+                        "values_after_fill": values_after_fill,
+                        "values_after_check": values_after_check,
                         "navigation_requests": navigation_requests,
                     },
                 ),

@@ -254,7 +254,30 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             page.goto(self.live_server_url + f"/dossiers/{case.pk}")
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()
             count_fields = page.locator("[data-count-product]").all()
-            self.assertTrue(count_fields, {"path": urlsplit(page.url).path})
+            from apps.cases.models import StockHold
+            from apps.inventory.models import StockBalance
+
+            product_ids = list(case.delivery.lines.values_list("line__product_id", flat=True))
+            case_diagnostic = {
+                "delivery_id": str(case.delivery_id),
+                "product_ids": [str(value) for value in product_ids],
+                "stock_balances": list(
+                    StockBalance.objects.filter(product_id__in=product_ids).values(
+                        "product_id", "physical", "reserved", "version"
+                    )
+                ),
+                "stock_holds": list(
+                    StockHold.objects.filter(product_id__in=product_ids).values_list(
+                        "product_id", "case_id"
+                    )
+                ),
+                "screen": page.locator("body").inner_text()[:1200],
+                "has_form": page.locator("#case-form").count(),
+            }
+            self.assertTrue(
+                count_fields,
+                {"path": urlsplit(page.url).path, **case_diagnostic},
+            )
             for n in count_fields:
                 expect(n).to_have_value("")
             for n in count_fields:

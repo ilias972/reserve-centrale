@@ -83,8 +83,23 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
             self.inspect(page, "commande-mobile")
             page.get_by_role("link", name="Recevoir cette arrivée", exact=True).click()
             self.assertIn("/recevoir", page.url, page.url)
+            script_src = page.locator('script[src*="receiving/editor.js"]').get_attribute("src")
+            self.assertTrue(
+                script_src.startswith("/static/"),
+                {"url": page.url, "script": script_src},
+            )
+            self.assertTrue(
+                page.evaluate("typeof window.ReserveRequestOperation === 'function'"),
+                {"url": page.url, "title": page.title()},
+            )
             values = page.locator('[data-quantity="conforming"]')
-            self.assertEqual(values.count(), 2, page.url)
+            page_details = page.evaluate("""() => ({
+                title: document.title,
+                main: document.querySelector('main')?.innerText.slice(0, 500),
+                rows: document.querySelectorAll('.arrival-row').length,
+                hasConfig: Boolean(document.getElementById('arrival-config'))
+            })""")
+            self.assertEqual(values.count(), 2, {"url": page.url, **page_details})
             self.assertEqual(values.evaluate_all("nodes=>nodes.map(n=>n.value)"), ["0", "0"])
             values.nth(0).fill("3")
             values.nth(1).fill("5")

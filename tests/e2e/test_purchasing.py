@@ -269,6 +269,8 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             self.follow(page)
             expect(page.locator("main")).to_contain_text("2 carton annulés")
             page.get_by_role("link", name="Annuler les quantités restantes", exact=True).click()
+            page.wait_for_load_state("networkidle")
+            page.locator("[data-order-line]").first.wait_for(state="visible")
             for field in page.locator("[data-order-line]").all():
                 value = field.get_attribute("max")
                 field.fill(value)

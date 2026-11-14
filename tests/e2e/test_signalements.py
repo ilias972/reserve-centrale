@@ -279,11 +279,15 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             )
             page.goto(self.live_server_url + f"/dossiers/{case.pk}")
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()
+            page.wait_for_load_state("networkidle")
             count_fields = page.locator("[data-count-product]").all()
             case_diagnostic.update(
                 {
                     "screen": page.locator("body").inner_text()[:1200],
                     "has_form": page.locator("#case-form").count(),
+                    "inputs": page.locator("input").evaluate_all(
+                        "nodes => nodes.map(node => ({id: node.id, name: node.name, type: node.type, countProduct: node.getAttribute('data-count-product')}))"
+                    ),
                 }
             )
             self.assertTrue(

@@ -228,15 +228,19 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             static_failures = []
             page.on(
                 "response",
-                lambda r: static_responses.append((urlsplit(r.url).path, r.status))
-                if urlsplit(r.url).path.startswith("/static/")
-                else None,
+                lambda r: (
+                    static_responses.append((urlsplit(r.url).path, r.status))
+                    if urlsplit(r.url).path.startswith("/static/")
+                    else None
+                ),
             )
             page.on(
                 "requestfailed",
-                lambda r: static_failures.append(urlsplit(r.url).path)
-                if urlsplit(r.url).path.startswith("/static/")
-                else None,
+                lambda r: (
+                    static_failures.append(urlsplit(r.url).path)
+                    if urlsplit(r.url).path.startswith("/static/")
+                    else None
+                ),
             )
             page.goto(self.live_server_url + f"/dossiers/{case.pk}")
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()

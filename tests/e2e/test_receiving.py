@@ -86,15 +86,19 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
             self.inspect(page, "commande-mobile")
             page.on(
                 "response",
-                lambda r: self.static_responses.append((urlsplit(r.url).path, r.status))
-                if urlsplit(r.url).path.startswith("/static/")
-                else None,
+                lambda r: (
+                    self.static_responses.append((urlsplit(r.url).path, r.status))
+                    if urlsplit(r.url).path.startswith("/static/")
+                    else None
+                ),
             )
             page.on(
                 "requestfailed",
-                lambda r: self.static_failures.append(urlsplit(r.url).path)
-                if urlsplit(r.url).path.startswith("/static/")
-                else None,
+                lambda r: (
+                    self.static_failures.append(urlsplit(r.url).path)
+                    if urlsplit(r.url).path.startswith("/static/")
+                    else None
+                ),
             )
             page.get_by_role("link", name="Recevoir cette arrivée", exact=True).click()
             self.assertIn("/recevoir", page.url, page.url)
@@ -106,7 +110,13 @@ class ReceivingBrowserTests(ReceivingFixtures, StaticLiveServerTestCase):
             )
             self.assertTrue(
                 page.evaluate("typeof window.ReserveRequestOperation === 'function'"),
-                {"url": page.url, "title": page.title(), "static": self.static_responses, "failed_static": self.static_failures, "page_errors": self.errors},
+                {
+                    "url": page.url,
+                    "title": page.title(),
+                    "static": self.static_responses,
+                    "failed_static": self.static_failures,
+                    "page_errors": self.errors,
+                },
             )
             values = page.locator('[data-quantity="conforming"]')
             page_details = page.evaluate("""() => ({

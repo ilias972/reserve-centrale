@@ -221,32 +221,6 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
 
         request, products, case = self.shortage((4, 3))
         before = StockEntry.objects.count()
-        from apps.cases.models import StockHold
-        from apps.inventory.models import StockBalance
-
-        case_diagnostic = self.db(
-            lambda: {
-                "delivery_id": str(case.delivery_id),
-                "product_ids": [
-                    str(value)
-                    for value in case.delivery.lines.values_list("line__product_id", flat=True)
-                ],
-                "stock_balances": list(
-                    StockBalance.objects.filter(
-                        product_id__in=case.delivery.lines.values_list(
-                            "line__product_id", flat=True
-                        )
-                    ).values("product_id", "physical", "reserved", "version")
-                ),
-                "stock_holds": list(
-                    StockHold.objects.filter(
-                        product_id__in=case.delivery.lines.values_list(
-                            "line__product_id", flat=True
-                        )
-                    ).values_list("product_id", "case_id")
-                ),
-            }
-        )
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
             page = self.page(browser, self.admin, 390, 844)
@@ -281,18 +255,9 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             page.get_by_role("link", name="Confirmer la vérification du manque", exact=True).click()
             page.wait_for_load_state("networkidle")
             count_fields = page.locator("[data-count-product]").all()
-            case_diagnostic.update(
-                {
-                    "screen": page.locator("body").inner_text()[:1200],
-                    "has_form": page.locator("#case-form").count(),
-                    "inputs": page.locator("input").evaluate_all(
-                        "nodes => nodes.map(node => ({id: node.id, name: node.name, type: node.type, countProduct: node.getAttribute('data-count-product')}))"
-                    ),
-                }
-            )
             self.assertTrue(
                 count_fields,
-                {"path": urlsplit(page.url).path, **case_diagnostic},
+                {"path": urlsplit(page.url).path, "input_count": page.locator("input").count()},
             )
             for n in count_fields:
                 expect(n).to_have_value("")

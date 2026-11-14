@@ -275,17 +275,15 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 value = field.get_attribute("max")
                 field.fill(value)
                 self.assertEqual(field.input_value(), value)
-            values_after_fill = page.locator("[data-order-line]").evaluate_all(
+            values_before_check = page.locator("[data-order-line]").evaluate_all(
                 "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
             )
             page.locator("#purchase-verification").check()
-            values_after_check = page.locator("[data-order-line]").evaluate_all(
-                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
-            )
             self.assertEqual(
-                values_after_check,
-                values_after_fill,
-                {"values_after_fill": values_after_fill, "values_after_check": values_after_check},
+                page.locator("[data-order-line]").evaluate_all(
+                    "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+                ),
+                values_before_check,
             )
             before_submit = page.locator("[data-order-line]").evaluate_all(
                 "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
@@ -300,8 +298,6 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                     static_responses: extra.static_responses,
                     page_error_kinds: extra.page_error_kinds,
                     before_submit: extra.before_submit,
-                    values_after_fill: extra.values_after_fill,
-                    values_after_check: extra.values_after_check,
                     navigation_requests: extra.navigation_requests,
                     result: document.querySelector('#operation-result')?.textContent?.slice(0, 160) ?? null,
                     valid: document.querySelector('#purchase-form').checkValidity(),
@@ -314,8 +310,6 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                         "static_responses": static_responses,
                         "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
                         "before_submit": before_submit,
-                        "values_after_fill": values_after_fill,
-                        "values_after_check": values_after_check,
                         "navigation_requests": navigation_requests,
                     },
                 ),

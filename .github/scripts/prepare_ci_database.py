@@ -53,11 +53,19 @@ def write_environment() -> None:
         "LOCAL_RECOVERY_ENABLED": "0",
         "TEST_REPORT_PATH": str(Path(os.environ["RUNNER_TEMP"]) / "reserve-tests" / "tests.json"),
     }
+    secret_names = {
+        "PGPASSWORD",
+        "DATABASE_PASSWORD",
+        "RUNTIME_DATABASE_PASSWORD",
+        "TEST_DATABASE_PASSWORD",
+        "DJANGO_SECRET_KEY",
+    }
     with env_file.open("a", encoding="utf-8") as output:
         for name, value in values.items():
             if "\n" in value or "\r" in value:
                 raise SystemExit("Refusing a multiline CI environment value.")
-            print(f"::add-mask::{value}")
+            if name in secret_names:
+                print(f"::add-mask::{value}")
             output.write(f"{name}={value}\n")
 
 

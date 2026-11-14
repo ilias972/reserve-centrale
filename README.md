@@ -10,7 +10,7 @@ Réserve centrale is a self-hosted application for teams that manage shared stoc
 
 ### Dashboard — English
 
-![English dashboard showing operational counters, stock shortages, purchase needs and expected orders.](docs/screenshots/dashboard-en.png)
+![English dashboard showing operational counters, empty shortage and purchase-need sections, and one expected supplier order.](docs/screenshots/dashboard-en.png)
 
 ### Inventory — English
 

@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
+          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
+      PGDATABASE: postgres
+      NOTIFICATION_EXTERNAL_ALLOWED: "0"
+      NOTIFICATION_PUSH_ENABLED: "0"
+      NOTIFICATION_EMAIL_MODE: CAPTURE
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install GNU gettext
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gettext
+
+      - name: Install locked dependencies
+        run: python -m pip install --require-hashes -r requirements-dev.txt
+
+      - name: Prepare isolated PostgreSQL roles and database
+        run: python .github/scripts/prepare_ci_database.py
+
+      - name: Compile translation catalogs
+        run: python manage.py compilemessages
+
+      - name: Apply migrations
+        run: make migrate PYTHON=python
+
+      - name: Grant restricted runtime permissions
+        run: python manage.py grant_runtime --settings=config.settings.migration
+
+      - name: Run quality checks
+        run: |
+          make quality PYTHON=python
+          python -m ruff check .github/scripts
+          python -m ruff format --check .github/scripts
+
+  tests:
+    name: Tests (PostgreSQL + Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
+          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}-ci-service
+      PGDATABASE: postgres
+      NOTIFICATION_EXTERNAL_ALLOWED: "0"
+      NOTIFICATION_PUSH_ENABLED: "0"
+      NOTIFICATION_EMAIL_MODE: CAPTURE
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install GNU gettext
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gettext
+
+      - name: Install locked dependencies
+        run: python -m pip install --require-hashes -r requirements-dev.txt
+
+      - name: Prepare isolated PostgreSQL roles and database
+        run: python .github/scripts/prepare_ci_database.py
+
+      - name: Compile translation catalogs
+        run: python manage.py compilemessages
+
+      - name: Apply migrations
+        run: make migrate PYTHON=python
+
+      - name: Grant restricted runtime permissions
+        run: python manage.py grant_runtime --settings=config.settings.migration
+
+      - name: Install Chromium for browser tests
+        run: python -m playwright install --with-deps chromium
+
+      - name: Run complete Django test suite
+        id: django-tests
+        shell: bash
+        run: |
+          set +e
+          make test PYTHON=python
+          status=$?
+          printf 'TEST_EXIT_CODE=%s\n' "$status" >> "$GITHUB_ENV"
+          exit "$status"
+
+      - name: Summarize test results
+        if: always()
+        run: python .github/scripts/summarize_ci_tests.py
+
+      - name: Upload sanitized test summary
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: django-test-summary
+          path: ${{ runner.temp }}/reserve-tests/summary.json
+          if-no-files-found: error
+          retention-days: 14

@@ -20,6 +20,10 @@ Thank you for taking an interest in Réserve centrale. Focused bug fixes, docume
 
 There is no required commit-message format or contributor licence agreement at this time.
 
+## Automated checks
+
+Pull requests targeting main run two GitHub Actions checks: Quality and Tests (PostgreSQL + Chromium). The same checks run when changes are pushed to main. They use temporary CI credentials, a disposable PostgreSQL service and simulated notification transports; no deployment or external email or push is performed. A green workflow run is useful review evidence, but branch protection is not configured by this document.
+
 ## Application invariants
 
 Stock changes are transactional and audited. Keep the established balances and quantity equations intact: `0 ≤ R ≤ P`, `D = P − R`, `Q = L + C + U`, and `Qf = F + A + W`. Do not bypass permissions, idempotency, locking, or the append-only history to simplify a change. Read [Architecture](docs/ARCHITECTURE.md) before changing a stock, request, purchase or receiving workflow.

@@ -259,14 +259,22 @@ class SignalementCaptureTests(SignalementFixtures, StaticLiveServerTestCase):
             self.assertIn(
                 "Le comptage diffère",
                 result,
-                page.evaluate("""() => ({
+                page.evaluate(
+                    """extra => ({
                     url: location.pathname,
+                    ...extra,
                     formValid: document.querySelector('#case-form').checkValidity(),
                     disabled: [...document.querySelectorAll('#case-form input, #case-form textarea, #case-form button')]
                       .map(n => ({id:n.id,disabled:n.disabled,value:n.type === 'checkbox' ? n.checked : n.value})),
                     result: document.querySelector('#operation-result').innerText,
                     previewHidden: document.querySelector('#case-preview').hidden
-                })"""),
+                })""",
+                    {
+                        "static": static_responses,
+                        "failed_static": static_failures,
+                        "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
+                    },
+                ),
             )
             expect(page.locator("#case-confirm")).to_be_hidden()
             for product in products:

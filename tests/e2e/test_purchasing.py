@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
@@ -223,6 +224,15 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
             page = self.page(browser, 1280, 800)
+            static_responses = []
+            page.on(
+                "response",
+                lambda response: (
+                    static_responses.append((urlsplit(response.url).path, response.status))
+                    if "/static/" in response.url
+                    else None
+                ),
+            )
             page.goto(self.live_server_url + f"/achats/{order.pk}")
             page.get_by_role("link", name="Annuler les quantités restantes", exact=True).click()
             line = self.db(lambda: order.lines.get(product=p))
@@ -249,19 +259,30 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             expect(page.locator("main")).to_contain_text("2 carton annulés")
             page.get_by_role("link", name="Annuler les quantités restantes", exact=True).click()
             for field in page.locator("[data-order-line]").all():
-                field.fill(field.get_attribute("max"))
+                value = field.get_attribute("max")
+                field.fill(value)
+                self.assertEqual(field.input_value(), value)
             page.locator("#purchase-verification").check()
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
             self.assertTrue(
                 page.locator("#purchase-review").is_visible(),
-                page.evaluate("""() => ({
+                page.evaluate(
+                    """extra => ({
                     url: location.pathname,
+                    search_present: Boolean(location.search),
+                    static_responses: extra.static_responses,
+                    page_error_kinds: extra.page_error_kinds,
                     valid: document.querySelector('#purchase-form').checkValidity(),
                     reviewHidden: document.querySelector('#purchase-review').hidden,
                     confirmExists: Boolean(document.querySelector('#purchase-confirm')),
                     lines: [...document.querySelectorAll('[data-order-line]')]
                       .map(node => ({id: node.dataset.orderLine, value: node.value, max: node.max}))
-                })"""),
+                })""",
+                    {
+                        "static_responses": static_responses,
+                        "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
+                    },
+                ),
             )
             page.locator("#purchase-confirm").click()
             self.follow(page)

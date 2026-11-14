@@ -60,7 +60,21 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
             message = review.locator("#case-message")
         else:
             message = page.locator("#case-message")
-        expect(message).to_be_visible()
+        self.assertTrue(
+            message.is_visible(),
+            page.evaluate("""() => {
+              const details = document.querySelector('.case-review');
+              const message = document.querySelector('#case-message');
+              const ancestors = [];
+              for (let node = message; node; node = node.parentElement) {
+                const style = getComputedStyle(node);
+                ancestors.push({tag: node.tagName, id: node.id, className: node.className,
+                  hidden: node.hidden, display: style.display, visibility: style.visibility});
+              }
+              return {path: location.pathname, detailsOpen: details?.open ?? null,
+                summary: details?.querySelector('summary')?.textContent ?? null, ancestors};
+            }"""),
+        )
         message.fill("Quantités fictives recomptées et conséquences vérifiées.")
         page.locator("#case-verification").check()
 

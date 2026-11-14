@@ -1,43 +1,68 @@
 # Local installation
 
-This application is installed as a dedicated instance for one organisation. Django’s built-in development server is for local development only. Do not expose it to a network or use it as a production server.
+This guide creates a development instance for one organisation. It uses a local PostgreSQL database and Django’s development server. Do not expose that server to a network or use it for production.
 
 ## Prerequisites
 
 - Python 3.13.
 - PostgreSQL compatible with the project migrations.
-- GNU gettext tools (`msgfmt`); on macOS, install them with `brew install gettext` and ensure the Homebrew `gettext` `bin` directory is on `PATH`.
-- A PostgreSQL owner role, a separate runtime role, and a separate test role allowed to create its own temporary test database.
+- GNU gettext tools, including `msgfmt`. On macOS, install them with `brew install gettext` and add Homebrew’s gettext `bin` directory to `PATH` if needed.
+- A local PostgreSQL administrator connection for creating roles and the database.
 
-Databases, secrets, certificates, and accounts from other installations are not included. Generate new local values; never reuse credentials from another instance.
-
-## Python environment
+## Get the source and install dependencies
 
 ```sh
+git clone https://github.com/ilias972/reserve-centrale.git
+cd reserve-centrale
 python3.13 -m venv .venv
 .venv/bin/python -m pip install --require-hashes -r requirements-dev.txt
 .venv/bin/python manage.py compilemessages
 cp .env.example .env
 ```
 
-Edit `.env` with a newly generated Django secret, a unique operation-generation ID, a local database, and local role credentials. To use the optional demo generator, name the dedicated database `demo_stock_app_*`. Never commit `.env`.
+Edit `.env` before continuing. Set a newly generated `DJANGO_SECRET_KEY`, a unique `OPERATION_GENERATION`, and the local database credentials described below. Do not reuse credentials from another installation and never commit `.env`. For example, generate values locally with `python3.13 -c 'import secrets; print(secrets.token_urlsafe(64))'` and `python3.13 -c 'import uuid; print(uuid.uuid4())'`. Keep the generated secret out of terminal logs and reports.
 
-## Local PostgreSQL
+Keep these defaults for a local demo unless you have a specific reason to change them:
 
-Create the roles and dedicated database through a local PostgreSQL administration connection. The following are placeholders; replace every password with a locally generated value:
+```dotenv
+DJANGO_DEBUG=0
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+NOTIFICATION_EXTERNAL_ALLOWED=0
+NOTIFICATION_PUSH_ENABLED=0
+NOTIFICATION_EMAIL_MODE=CAPTURE
+DATABASE_HOST=127.0.0.1
+```
+
+## Create local PostgreSQL roles and database
+
+Use a local PostgreSQL administration connection. Replace each password placeholder with a different, locally generated secret. These SQL statements create roles for this local installation only.
 
 ```sql
-CREATE ROLE stock_app_owner LOGIN PASSWORD 'replace-with-a-local-secret';
-CREATE ROLE stock_app_runtime LOGIN PASSWORD 'replace-with-another-local-secret';
-CREATE ROLE stock_app_test LOGIN CREATEDB PASSWORD 'replace-with-a-test-only-secret';
+CREATE ROLE stock_app_owner LOGIN PASSWORD 'replace-with-a-local-owner-secret';
+CREATE ROLE stock_app_runtime LOGIN PASSWORD 'replace-with-a-local-runtime-secret';
+CREATE ROLE stock_app_test LOGIN CREATEDB PASSWORD 'replace-with-a-local-test-secret';
 GRANT CONNECT ON DATABASE postgres TO stock_app_test;
 CREATE DATABASE demo_stock_app_local OWNER stock_app_owner;
 GRANT CONNECT ON DATABASE demo_stock_app_local TO stock_app_runtime;
 ```
 
-Set `DATABASE_NAME=demo_stock_app_local`, owner settings (`DATABASE_USER`, `DATABASE_PASSWORD`), runtime settings (`RUNTIME_DATABASE_USER`, `RUNTIME_DATABASE_PASSWORD`), and test settings (`TEST_DATABASE_USER`, `TEST_DATABASE_PASSWORD`) in `.env`. The test role is only for tests and must be able to create and remove its own `test_stock_app_*` databases. Keep the host at `127.0.0.1` for local use.
+In `.env`, set `DATABASE_NAME=demo_stock_app_local`, `DATABASE_USER=stock_app_owner`, `DATABASE_PASSWORD` to the owner password, `RUNTIME_DATABASE_USER=stock_app_runtime`, `RUNTIME_DATABASE_PASSWORD` to its password, and the matching `TEST_DATABASE_USER`, `TEST_DATABASE_PASSWORD` and `TEST_DATABASE_NAME=test_stock_app_local`. Keep `DATABASE_HOST=127.0.0.1` and set the PostgreSQL port used by your local server.
 
-## Migrations and first manager
+### Secure the application schema before migrations
+
+Connect as a PostgreSQL administrator to the new `demo_stock_app_local` database and run the following statements **before** `make migrate`. This removes schema-creation rights granted to `PUBLIC` by some PostgreSQL defaults and gives the application roles only the schema permissions they need.
+
+```sql
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+GRANT USAGE, CREATE ON SCHEMA public TO stock_app_owner;
+GRANT USAGE ON SCHEMA public TO stock_app_runtime;
+```
+
+The `grant_runtime` command checks that the runtime role cannot create objects. Do not skip that check.
+
+## Apply migrations and create the first manager
+
+Confirm that `.env` points to the dedicated local database, then run:
 
 ```sh
 make migrate
@@ -45,9 +70,9 @@ make migrate
 .venv/bin/python manage.py bootstrap_admin --username manager --display-name "Local manager" --confirm-local-test --settings=config.settings.migration
 ```
 
-`grant_runtime` grants the runtime role the SQL permissions expected by the application. `bootstrap_admin` is restricted to the local host and owner role. It creates the single manager account and displays a temporary password once. Sign in and change it immediately. Do not copy the command output into a log or evidence file.
+`bootstrap_admin` is restricted to the local host and database owner. It creates one manager account and displays a temporary password once. Sign in at `/connexion`, replace that password immediately, and do not copy the command output into a log or evidence file. There is no default manager password.
 
-Check configuration and migrations:
+Check the local configuration and migration state:
 
 ```sh
 make check
@@ -60,25 +85,15 @@ make check
 DJANGO_DEBUG=1 make run
 ```
 
-`DJANGO_DEBUG=1` enables the static resources needed by Django’s development server. Use it only for this local start. Never use `runserver` or `DEBUG=1` for operations. The command listens on `127.0.0.1:8000`; open `http://127.0.0.1:8000/connexion` on the same computer. This local HTTP setup does not validate HTTPS or remote-device access.
+Open `http://127.0.0.1:8000/connexion` on the same computer. `DJANGO_DEBUG=1` serves the static resources needed for this local development server; it does not enable a safe production configuration. This local HTTP setup does not provide HTTPS or validate access from another device.
 
 ## Optional fictitious demo
 
-After changing the manager’s temporary password, follow [Fictitious demo](DEMO.md). The command requires a dedicated demo database, confirms its exact name, requires external transports to be disabled, and refuses a non-empty database. It does not reset or delete data.
+After changing the manager’s temporary password, follow [Fictitious demo data](DEMO.md). The seed command requires a dedicated database whose name starts with `demo_stock_app_`, checks its exact name and that it is empty, and refuses if external transports are enabled. It never resets or deletes data.
 
-## Tests
+## Tests and quality checks
 
-Tests require local PostgreSQL, the separate `TEST_DATABASE_USER` role with `CREATEDB`, and a temporary database whose name begins with `test_stock_app_`. Under `config.settings.test`, Django and child processes use that role only for the isolated test environment. It remains distinct from the owner and runtime roles. Tests do not use the demo database.
-
-On PostgreSQL 14 and older clusters where `public` grants `CREATE` to `PUBLIC`, a PostgreSQL administrator must secure the new application database before running migrations. Replace the role names below with the configured owner and runtime roles, then run this SQL while connected to the application database:
-
-```sql
-REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-GRANT USAGE, CREATE ON SCHEMA public TO stock_app_owner;
-GRANT USAGE ON SCHEMA public TO stock_app_runtime;
-```
-
-The `grant_runtime` command verifies that the runtime role cannot create objects. It fails with an actionable error if the connected database owner cannot enforce that restriction. PostgreSQL 15+ installations should still run this check rather than assume the schema defaults are safe.
+Tests use a separate PostgreSQL test role with `CREATEDB`, and create temporary databases whose names begin with `test_stock_app_`. They do not use the demo database. Keep the test role separate from the owner and runtime roles.
 
 ```sh
 DATABASE_NAME=postgres TEST_DATABASE_NAME=test_stock_app_local \
@@ -86,7 +101,15 @@ DATABASE_NAME=postgres TEST_DATABASE_NAME=test_stock_app_local \
 make quality
 ```
 
-Tests disable external transports, capture email locally, and simulate push delivery.
+Tests disable external transports, capture email locally and simulate push delivery.
+
+## Troubleshooting
+
+- **`msgfmt: command not found`:** install GNU gettext and ensure its `bin` directory is on `PATH`, then rerun `compilemessages`.
+- **Database connection or password error:** check the `DATABASE_*`, `RUNTIME_DATABASE_*` and `TEST_DATABASE_*` values in the local `.env`, and verify the roles can connect to the named local database.
+- **`The runtime role can still create in public`:** connect as the PostgreSQL administrator to the application database and run the three schema statements above; then rerun `grant_runtime`.
+- **The demo command refuses its target:** confirm that the selected database is a dedicated local database named with the `demo_stock_app_` prefix, contains no business data, and has external transports disabled. Use a new empty demo database rather than resetting a shared database.
+- **The demo command reports an incomplete or non-empty seed:** it makes no destructive changes. Use a newly created, dedicated demo database and follow [Fictitious demo data](DEMO.md).
 
 ## Operations
 
@@ -94,4 +117,4 @@ Tests disable external transports, capture email locally, and simulate push deli
 - Apply migrations with `make migrate`.
 - Check invariants with `.venv/bin/python manage.py check_consistency --settings=config.settings.migration`.
 
-Before operational use, configure TLS, secrets, off-host backups, monitoring, upload limits, retention, and network access for the selected environment. This guide is not a production deployment procedure.
+A real deployment requires separate decisions and work for TLS, secrets, off-host backups, monitoring, upload limits, retention, and network access. This document is a local development guide, not a production deployment procedure.

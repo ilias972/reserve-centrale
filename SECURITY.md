@@ -1,8 +1,10 @@
 # Security policy
 
-This candidate does not yet provide an operational private vulnerability-reporting channel or a published security contact. Do not post sensitive vulnerability details in a public issue.
+## Reporting vulnerabilities
 
-Before opening the repository, the maintainer should enable GitHub’s private vulnerability reporting or publish a verified private contact. No response time is promised.
+GitHub private vulnerability reporting is enabled for this repository. Submit sensitive reports through [Report a vulnerability](https://github.com/ilias972/reserve-centrale/security/advisories/new). Do not post sensitive vulnerability details in a public issue.
+
+No response time or support commitment is promised.
 
 Real deployments require separate environment configuration, unique secrets, TLS, permission review, tested backups, and an update process.
 

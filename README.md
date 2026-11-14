@@ -74,4 +74,4 @@ The project code identified as licensable by the named maintainer is offered und
 
 ## Contributing and security
 
-Contribution and vulnerability-reporting instructions are in [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SECURITY.md`](SECURITY.md). This candidate may not yet have a public contribution or private vulnerability-reporting channel.
+Contribution instructions are in [`CONTRIBUTING.md`](CONTRIBUTING.md). Issues and pull requests are enabled. Use GitHub private vulnerability reporting for sensitive security reports; see [`SECURITY.md`](SECURITY.md).

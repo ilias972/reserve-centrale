@@ -280,6 +280,11 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             values_after_check = page.locator("[data-order-line]").evaluate_all(
                 "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
             )
+            self.assertEqual(
+                values_after_check,
+                values_after_fill,
+                {"values_after_fill": values_after_fill, "values_after_check": values_after_check},
+            )
             before_submit = page.locator("[data-order-line]").evaluate_all(
                 "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
             )
@@ -293,6 +298,8 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                     static_responses: extra.static_responses,
                     page_error_kinds: extra.page_error_kinds,
                     before_submit: extra.before_submit,
+                    values_after_fill: extra.values_after_fill,
+                    values_after_check: extra.values_after_check,
                     navigation_requests: extra.navigation_requests,
                     result: document.querySelector('#operation-result')?.textContent?.slice(0, 160) ?? null,
                     valid: document.querySelector('#purchase-form').checkValidity(),

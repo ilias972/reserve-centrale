@@ -1,0 +1,256 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      test_label:
+        description: "Optional Django test label for focused diagnostics; leave empty to run the full suite."
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGDATABASE: postgres
+      NOTIFICATION_EXTERNAL_ALLOWED: "0"
+      NOTIFICATION_PUSH_ENABLED: "0"
+      NOTIFICATION_EMAIL_MODE: CAPTURE
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Create project virtual environment
+        run: python -m venv .venv
+
+      - name: Install GNU gettext
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gettext
+
+      - name: Install locked dependencies
+        run: .venv/bin/python -m pip install --require-hashes -r requirements-dev.txt
+
+      - name: Generate run-scoped CI credentials
+        run: .venv/bin/python .github/scripts/prepare_ci_database.py --write-environment
+
+      - name: Start disposable PostgreSQL 17 service
+        run: |
+          docker run --detach \
+            --name reserve-ci-postgres \
+            --publish 5432:5432 \
+            --env "POSTGRES_PASSWORD=$PGPASSWORD" \
+            --env POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 \
+            --health-cmd "pg_isready -U postgres -d postgres" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            postgres:17
+          for attempt in $(seq 1 30); do
+            health=$(docker inspect --format='{{.State.Health.Status}}' reserve-ci-postgres)
+            if [ "$health" = healthy ]; then
+              exit 0
+            fi
+            if [ "$health" = unhealthy ]; then
+              echo "PostgreSQL service did not become healthy." >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Timed out waiting for the PostgreSQL service." >&2
+          exit 1
+
+      - name: Create least-privilege PostgreSQL roles and database
+        run: .venv/bin/python .github/scripts/prepare_ci_database.py
+
+      - name: Compile translation catalogs
+        run: .venv/bin/python manage.py compilemessages
+
+      - name: Apply migrations
+        run: make migrate PYTHON=.venv/bin/python
+
+      - name: Grant restricted runtime permissions
+        run: .venv/bin/python manage.py grant_runtime --settings=config.settings.migration
+
+      - name: Run quality checks
+        run: |
+          make quality PYTHON=.venv/bin/python
+          .venv/bin/python -m ruff check .github/scripts
+          .venv/bin/python -m ruff format --check .github/scripts
+
+      - name: Stop disposable PostgreSQL service
+        if: always()
+        run: docker rm --force reserve-ci-postgres >/dev/null 2>&1 || true
+
+  tests:
+    name: Tests (PostgreSQL + Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGDATABASE: postgres
+      NOTIFICATION_EXTERNAL_ALLOWED: "0"
+      NOTIFICATION_PUSH_ENABLED: "0"
+      NOTIFICATION_EMAIL_MODE: CAPTURE
+      PG_BIN: /usr/lib/postgresql/17/bin
+      DJANGO_TEST_LABEL: ${{ github.event.inputs.test_label || '' }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Create project virtual environment
+        run: python -m venv .venv
+
+      - name: Install GNU gettext
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gettext
+
+      - name: Install locked dependencies
+        run: .venv/bin/python -m pip install --require-hashes -r requirements-dev.txt
+
+      - name: Install PostgreSQL 17 client tools
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl --fail --silent --show-error --location \
+            https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+            --output /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          fingerprint=$(gpg --show-keys --with-colons /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc | awk -F: '$1 == "fpr" { print $10; exit }')
+          test "$fingerprint" = "B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8"
+          architecture=$(dpkg --print-architecture)
+          printf '%s\n' \
+            'Types: deb' \
+            'URIs: https://apt.postgresql.org/pub/repos/apt' \
+            'Suites: noble-pgdg' \
+            "Architectures: $architecture" \
+            'Components: main' \
+            'Signed-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc' \
+            | sudo tee /etc/apt/sources.list.d/pgdg.sources >/dev/null
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y postgresql-client-17
+          pg_dump --version
+          pg_restore --version
+
+      - name: Generate run-scoped CI credentials
+        run: .venv/bin/python .github/scripts/prepare_ci_database.py --write-environment
+
+      - name: Start disposable PostgreSQL 17 service
+        run: |
+          docker run --detach \
+            --name reserve-ci-postgres \
+            --publish 5432:5432 \
+            --env "POSTGRES_PASSWORD=$PGPASSWORD" \
+            --env POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 \
+            --health-cmd "pg_isready -U postgres -d postgres" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            postgres:17
+          for attempt in $(seq 1 30); do
+            health=$(docker inspect --format='{{.State.Health.Status}}' reserve-ci-postgres)
+            if [ "$health" = healthy ]; then
+              exit 0
+            fi
+            if [ "$health" = unhealthy ]; then
+              echo "PostgreSQL service did not become healthy." >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Timed out waiting for the PostgreSQL service." >&2
+          exit 1
+
+      - name: Create least-privilege PostgreSQL roles and database
+        run: .venv/bin/python .github/scripts/prepare_ci_database.py
+
+      - name: Compile translation catalogs
+        run: .venv/bin/python manage.py compilemessages
+
+      - name: Apply migrations
+        run: make migrate PYTHON=.venv/bin/python
+
+      - name: Grant restricted runtime permissions
+        run: .venv/bin/python manage.py grant_runtime --settings=config.settings.migration
+
+      - name: Install Chromium for browser tests
+        run: .venv/bin/python -m playwright install --with-deps chromium
+
+      - name: Run complete Django test suite
+        id: django-tests
+        shell: bash
+        run: |
+          set +e
+          if [[ -n "$DJANGO_TEST_LABEL" ]]; then
+            IFS=, read -r -a labels <<< "$DJANGO_TEST_LABEL"
+            valid_labels=1
+            for label in "${labels[@]}"; do
+              if [[ ! "$label" =~ ^tests([.]|$) ]]; then
+                echo "Focused test labels must be within the tests package." >&2
+                valid_labels=0
+              fi
+            done
+            if [[ "$valid_labels" -eq 0 ]]; then
+              status=2
+            else
+              DATABASE_NAME=postgres .venv/bin/python manage.py test "${labels[@]}" \
+                --settings=config.settings.test --noinput --verbosity=2
+              status=$?
+            fi
+          else
+            make test PYTHON=.venv/bin/python
+            status=$?
+          fi
+          printf 'TEST_EXIT_CODE=%s\n' "$status" >> "$GITHUB_ENV"
+          exit "$status"
+
+      - name: Summarize test results
+        if: always()
+        run: .venv/bin/python .github/scripts/summarize_ci_tests.py
+
+      - name: Upload sanitized test summary
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: django-test-summary
+          path: ${{ runner.temp }}/reserve-tests/summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Stop disposable PostgreSQL service
+        if: always()
+        run: docker rm --force reserve-ci-postgres >/dev/null 2>&1 || true

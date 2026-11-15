@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
@@ -65,6 +66,7 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
         )
 
     def follow(self, page):
+        expect(page.locator("#operation-result")).to_contain_text("historisé")
         page.get_by_role("link", name="Consulter les données à jour", exact=True).click()
         page.wait_for_load_state("networkidle")
 
@@ -128,10 +130,12 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 0,
             )
             page.get_by_role("link", name="Mettre en attente", exact=True).click()
+            page.wait_for_load_state("networkidle")
             page.get_by_role("button", name="Confirmer la mise en attente", exact=True).click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("Reportée")
             page.get_by_role("link", name="Réactiver", exact=True).click()
+            page.wait_for_load_state("networkidle")
             page.get_by_role("button", name="Confirmer la réactivation", exact=True).click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("À commander")
@@ -223,12 +227,44 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
             page = self.page(browser, 1280, 800)
+            static_responses = []
+            navigation_requests = []
+            page.on(
+                "response",
+                lambda response: (
+                    static_responses.append((urlsplit(response.url).path, response.status))
+                    if "/static/" in response.url
+                    else None
+                ),
+            )
+            page.on(
+                "request",
+                lambda request: (
+                    navigation_requests.append(
+                        {"method": request.method, "path": urlsplit(request.url).path}
+                    )
+                    if request.is_navigation_request()
+                    else None
+                ),
+            )
             page.goto(self.live_server_url + f"/achats/{order.pk}")
             page.get_by_role("link", name="Annuler les quantités restantes", exact=True).click()
             line = self.db(lambda: order.lines.get(product=p))
             page.locator(f'[data-order-line="{line.pk}"]').fill("2")
             page.locator("#purchase-verification").check()
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
+            self.assertTrue(
+                page.locator("#purchase-review").is_visible(),
+                page.evaluate("""() => ({
+                    url: location.pathname,
+                    valid: document.querySelector('#purchase-form').checkValidity(),
+                    invalid: [...document.querySelector('#purchase-form').elements]
+                      .filter(node => !node.checkValidity())
+                      .map(node => ({id: node.id, name: node.name})),
+                    lines: [...document.querySelectorAll('[data-order-line]')]
+                      .map(node => ({id: node.dataset.orderLine, value: node.value, max: node.max}))
+                })"""),
+            )
             self.inspect(page, "annulation-reliquat-preview")
             page.get_by_role(
                 "button", name="Confirmer l’annulation du reliquat", exact=True
@@ -236,13 +272,52 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
             self.follow(page)
             expect(page.locator("main")).to_contain_text("2 carton annulés")
             page.get_by_role("link", name="Annuler les quantités restantes", exact=True).click()
+            page.wait_for_load_state("networkidle")
+            page.locator("[data-order-line]").first.wait_for(state="visible")
             for field in page.locator("[data-order-line]").all():
-                field.fill(field.get_attribute("max"))
+                value = field.get_attribute("max")
+                field.fill(value)
+                self.assertEqual(field.input_value(), value)
+            values_before_check = page.locator("[data-order-line]").evaluate_all(
+                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+            )
             page.locator("#purchase-verification").check()
+            self.assertEqual(
+                page.locator("[data-order-line]").evaluate_all(
+                    "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+                ),
+                values_before_check,
+            )
+            before_submit = page.locator("[data-order-line]").evaluate_all(
+                "nodes => nodes.map(node => ({value: node.value, max: node.max}))"
+            )
             page.get_by_role("button", name="Vérifier le récapitulatif", exact=True).click()
-            page.get_by_role(
-                "button", name="Confirmer l’annulation du reliquat", exact=True
-            ).click()
+            self.assertTrue(
+                page.locator("#purchase-review").is_visible(),
+                page.evaluate(
+                    """extra => ({
+                    url: location.pathname,
+                    search_present: Boolean(location.search),
+                    static_responses: extra.static_responses,
+                    page_error_kinds: extra.page_error_kinds,
+                    before_submit: extra.before_submit,
+                    navigation_requests: extra.navigation_requests,
+                    result: document.querySelector('#operation-result')?.textContent?.slice(0, 160) ?? null,
+                    valid: document.querySelector('#purchase-form').checkValidity(),
+                    reviewHidden: document.querySelector('#purchase-review').hidden,
+                    confirmExists: Boolean(document.querySelector('#purchase-confirm')),
+                    lines: [...document.querySelectorAll('[data-order-line]')]
+                      .map(node => ({id: node.dataset.orderLine, value: node.value, max: node.max}))
+                })""",
+                    {
+                        "static_responses": static_responses,
+                        "page_error_kinds": [error.split(":", 1)[0][:40] for error in self.errors],
+                        "before_submit": before_submit,
+                        "navigation_requests": navigation_requests,
+                    },
+                ),
+            )
+            page.locator("#purchase-confirm").click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("Annulée sans réception")
             expect(

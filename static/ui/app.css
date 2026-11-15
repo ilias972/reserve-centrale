@@ -484,6 +484,9 @@ td.quantity {
 .table-scroll,
 .table-wrap {
   overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--card);
@@ -1644,6 +1647,9 @@ dd {
   .profile-name {
     display: none;
   }
+  .role-assistant .logout span {
+    display: none;
+  }
   .top-navigation a {
     padding: 8px;
   }
@@ -1764,6 +1770,15 @@ dd {
     flex: 1;
     min-width: 100px;
   }
+  .search > label {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .search > label :is(input, select) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
   .role-auth .app-main {
     padding-top: 20px;
   }
@@ -1771,7 +1786,7 @@ dd {
     padding: 24px;
   }
   .role-auth .topbar {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
   .role-auth .brand div > span {
     display: none;
@@ -2080,6 +2095,10 @@ select:focus-visible {
   min-width: 44px;
   cursor: pointer;
 }
+.permission-table td label.sr-only {
+  min-height: 1px;
+  min-width: 1px;
+}
 @media (pointer: coarse) {
   [data-step-input] {
     width: 44px !important;
@@ -2384,13 +2403,31 @@ select:focus-visible {
   .table-scroll:has([data-action-table][data-table-enhanced]),.table-wrap:has([data-action-table][data-table-enhanced]) {overflow:visible}
 }
 @media(max-width:360px){
-  .search {grid-template-columns:minmax(0,1fr)}
+  .search {display:grid;grid-template-columns:minmax(0,1fr)}
   .role-replenisher .stock-row {flex-wrap:wrap}
   .role-replenisher .stock-row .stock-product {flex-basis:100%;min-width:0}
   .role-replenisher .stock-row .stock-product > div {min-width:0}
   .role-replenisher .stock-row .stock-counter {margin-inline-start:auto}
   .bottom-navigation a {min-width:0;padding:7px 2px;justify-content:flex-start;min-height:68px}
   .bottom-navigation a > span:last-child {max-width:100%;overflow-wrap:normal;white-space:nowrap;font-size:9px;line-height:1.2;text-align:center}
+}
+
+@media (max-width: 420px) {
+  .role-auth .topbar {
+    height: auto;
+    min-height: 84px;
+    padding-inline: 12px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .role-auth .app-main {
+    padding-inline: 12px;
+  }
+
+  .role-auth .narrow {
+    padding: 20px;
+  }
 }
 
 /* Le conseil et l’action restent tous deux visibles aux largeurs ordinateur. */

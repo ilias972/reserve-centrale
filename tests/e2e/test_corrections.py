@@ -52,11 +52,33 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
         page.screenshot(path=str(ROOT / (name + ".png")), full_page=True)
 
     def fill_verification(self, page):
-        if page.locator(".case-review").count():
-            page.locator(".case-review").evaluate("node=>node.open=true")
-        page.locator("#case-message").fill(
-            "Quantités fictives recomptées et conséquences vérifiées."
+        review = page.locator(".case-review")
+        if review.count() and not review.evaluate("node=>node.open"):
+            review.locator("summary").click()
+        if review.count():
+            expect(review).to_have_attribute("open", "")
+            message = review.locator("#case-message")
+        else:
+            message = page.locator("#case-message")
+        self.assertTrue(
+            message.is_visible(),
+            page.evaluate("""() => {
+              const details = document.querySelector('.case-review');
+              const message = document.querySelector('#case-message');
+              const ancestors = [];
+              for (let node = message; node; node = node.parentElement) {
+                const style = getComputedStyle(node);
+                ancestors.push({tag: node.tagName, id: node.id, className: node.className,
+                  hidden: node.hidden, display: style.display, visibility: style.visibility});
+              }
+              return {path: location.pathname,
+                heading: document.querySelector('main h1')?.textContent ?? null,
+                detailsCount: document.querySelectorAll('.case-review').length,
+                detailsOpen: details?.open ?? null,
+                summary: details?.querySelector('summary')?.textContent ?? null, ancestors};
+            }"""),
         )
+        message.fill("Quantités fictives recomptées et conséquences vérifiées.")
         page.locator("#case-verification").check()
 
     def follow_success(self, page):
@@ -91,6 +113,7 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
             admin.get_by_role("link", name="Signalements", exact=True).click()
             admin.get_by_role("link", name="Remises aux unités", exact=True).click()
             admin.get_by_role("link", name="Examiner le signalement", exact=True).click()
+            admin.wait_for_load_state("networkidle")
             self.fill_verification(admin)
             admin.get_by_role("button", name="Commencer la vérification", exact=True).click()
             self.follow_success(admin)
@@ -193,6 +216,7 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
             admin = self.page(browser, self.admin)
             admin.goto(self.live_server_url + f"/demandes/{request.pk}")
             admin.get_by_role("link", name="Clôturer le reliquat pour abandon", exact=True).click()
+            admin.wait_for_load_state("networkidle")
             self.fill_verification(admin)
             admin.get_by_role("button", name="Prévisualiser les conséquences", exact=True).click()
             expect(admin.locator("#case-preview")).to_contain_text("réservé : 6 → 0")

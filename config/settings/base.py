@@ -51,7 +51,7 @@ LANGUAGE_COOKIE_HTTPONLY = True
 TIME_ZONE = "Europe/Paris"
 USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / ".local" / "static"
 TEMPLATES = [
     {

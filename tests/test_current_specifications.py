@@ -61,5 +61,9 @@ class PublicDocumentationTests(SimpleTestCase):
         self.assertIn("AXE-LICENSE.txt", notices)
         self.assertIn("AXE-THIRD-PARTY-LICENSES.txt", notices)
         self.assertIn("AXE-THIRD-PARTY-LICENSES.txt", asset_notes)
-        self.assertIn("identified as licensable by the named maintainer", readme)
-        self.assertIn("does not replace those obligations", readme)
+        self.assertIn(
+            "project code identified in [`LICENSE`](LICENSE) is offered under the MIT License",
+            readme,
+        )
+        self.assertIn("Third-party components retain their own licences", readme)
+        self.assertIn("The project licence does not replace third-party terms", readme)

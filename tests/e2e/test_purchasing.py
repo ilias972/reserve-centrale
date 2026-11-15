@@ -130,10 +130,12 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
                 0,
             )
             page.get_by_role("link", name="Mettre en attente", exact=True).click()
+            page.wait_for_load_state("networkidle")
             page.get_by_role("button", name="Confirmer la mise en attente", exact=True).click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("Reportée")
             page.get_by_role("link", name="Réactiver", exact=True).click()
+            page.wait_for_load_state("networkidle")
             page.get_by_role("button", name="Confirmer la réactivation", exact=True).click()
             self.follow(page)
             expect(page.locator("main")).to_contain_text("À commander")

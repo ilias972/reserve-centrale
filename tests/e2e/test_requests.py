@@ -259,7 +259,9 @@ class BrowserRequestTests(RequestFixtures, StaticLiveServerTestCase):
                 route.abort("failed")
 
             page.route("**/api/v1/requests/*/cancel", lose_cancel, times=1)
-            page.get_by_role("button", name="Annuler ma demande", exact=True).click()
+            cancel_open = page.get_by_role("button", name="Annuler ma demande", exact=True)
+            expect(cancel_open).to_be_enabled()
+            cancel_open.click()
             expect(page.locator("#cancel-request")).to_be_visible()
             page.get_by_role("button", name="Confirmer l'annulation", exact=True).click()
             expect(page.locator("#operation-result")).to_contain_text("Vérifiez l'enregistrement")

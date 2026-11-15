@@ -10,6 +10,8 @@
     if(body.result==="CONFIRMED") window.ReserveLive.reload(true);
     else {operation.message(body.error?.message || gettext("Annulation non confirmée."),true);const link=document.createElement("a");link.href=location.pathname;link.textContent=gettext("Actualiser la demande");document.querySelector("#operation-result").append(link);}
   }});
+  // The server-rendered control starts disabled and is enabled by operation.start()
+  // only after its click handler and the cancellation form handler are attached.
   if(open)open.addEventListener("click",()=>{form.hidden=false;open.hidden=true;});
   document.querySelector("#cancel-back")?.addEventListener("click",()=>{form.hidden=true;open.hidden=false;});
   form?.addEventListener("submit",event=>{event.preventDefault();if(stale)return;operation.send(`/api/v1/requests/${config.request_id}/cancel`,{expected_version:config.expected_version});});

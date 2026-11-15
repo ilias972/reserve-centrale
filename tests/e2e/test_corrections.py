@@ -216,6 +216,7 @@ class BrowserCorrectionTests(CorrectionFixtures, StaticLiveServerTestCase):
             admin = self.page(browser, self.admin)
             admin.goto(self.live_server_url + f"/demandes/{request.pk}")
             admin.get_by_role("link", name="Clôturer le reliquat pour abandon", exact=True).click()
+            admin.wait_for_load_state("networkidle")
             self.fill_verification(admin)
             admin.get_by_role("button", name="Prévisualiser les conséquences", exact=True).click()
             expect(admin.locator("#case-preview")).to_contain_text("réservé : 6 → 0")

@@ -66,6 +66,7 @@ class BrowserPurchaseTests(PurchaseFixtures, StaticLiveServerTestCase):
         )
 
     def follow(self, page):
+        expect(page.locator("#operation-result")).to_contain_text("historisé")
         page.get_by_role("link", name="Consulter les données à jour", exact=True).click()
         page.wait_for_load_state("networkidle")
 
